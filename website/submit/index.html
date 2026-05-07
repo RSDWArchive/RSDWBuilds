@@ -58,6 +58,20 @@
         <small><span id="f-description-count">0</span> / 600</small>
       </fieldset>
 
+      <fieldset class="rsdw-field">
+        <label for="f-youtube">YouTube link</label>
+        <input id="f-youtube" type="url" inputmode="url"
+               placeholder="https://www.youtube.com/watch?v=..." />
+        <small>Optional. Adds a “YouTube” button to your card.</small>
+      </fieldset>
+
+      <fieldset class="rsdw-field">
+        <label for="f-nexusmods">NexusMods link</label>
+        <input id="f-nexusmods" type="url" inputmode="url"
+               placeholder="https://www.nexusmods.com/..." />
+        <small>Optional. Adds a “NexusMods” button to your card.</small>
+      </fieldset>
+
       <fieldset class="rsdw-field rsdw-auto">
         <label>Auto-generated</label>
         <small>Built from your inputs. Slug avoids collisions with existing entries.</small>
@@ -106,7 +120,7 @@
 
       <p class="rsdw-staging__hint">
         After downloading, send the zip to a maintainer (Discord, email, or attach
-        it to a GitHub issue). They will run <code>tools/validate_and_promote.py</code>
+        it to a GitHub issue). They will run <code>tools/process_submissions.py</code>
         to publish it on the site.
       </p>
     </form>

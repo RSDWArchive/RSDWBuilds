@@ -286,6 +286,8 @@
       .map(function (s) { return s.trim(); })
       .filter(Boolean);
     var description = $("f-description").value.trim();
+    var youtube = $("f-youtube").value.trim();
+    var nexusmods = $("f-nexusmods").value.trim();
     var base = slugify(name);
     var resolved = base ? uniqueSlug(dataset, base) : { slug: "", suffix: 0 };
     return {
@@ -293,11 +295,23 @@
       name: name,
       authors: authors,
       description: description,
+      youtube: youtube,
+      nexusmods: nexusmods,
       slug: resolved.slug,
       slugBase: base,
       slugSuffix: resolved.suffix,
       tags: deriveTags(dataset, name, authors),
     };
+  }
+
+  function isHttpUrl(s) {
+    if (!s) return false;
+    try {
+      var u = new URL(s);
+      return u.protocol === "http:" || u.protocol === "https:";
+    } catch (e) {
+      return false;
+    }
   }
 
   function validate() {
@@ -310,6 +324,8 @@
     if (!v.authors.length) issues.push("At least one author is required.");
     if (!v.description) issues.push("Description is required.");
     if (v.description.length > 600) issues.push("Description must be 600 characters or fewer.");
+    if (v.youtube && !isHttpUrl(v.youtube)) issues.push("YouTube link must be a valid http(s) URL.");
+    if (v.nexusmods && !isHttpUrl(v.nexusmods)) issues.push("NexusMods link must be a valid http(s) URL.");
     if (!images.length) issues.push("At least one image is required.");
     if (!download) issues.push("A download file is required.");
 
@@ -398,7 +414,7 @@
   /* === Build the card JSON === */
 
   function buildCardJson(values) {
-    return {
+    var card = {
       name: values.name,
       description: values.description,
       authors: values.authors,
@@ -407,6 +423,9 @@
       images: images.map(function (i) { return i.name; }),
       download: download.name,
     };
+    if (values.youtube) card.youtube = values.youtube;
+    if (values.nexusmods) card.nexusmods = values.nexusmods;
+    return card;
   }
 
   /* === Preview === */
@@ -456,6 +475,28 @@
       body.appendChild(desc);
     }
 
+    if (values.youtube || values.nexusmods) {
+      var links = document.createElement("div");
+      links.className = "rsdw-card__links";
+      if (values.youtube) {
+        var y = document.createElement("a");
+        y.href = values.youtube;
+        y.target = "_blank";
+        y.rel = "noopener";
+        y.textContent = "YouTube";
+        links.appendChild(y);
+      }
+      if (values.nexusmods) {
+        var n = document.createElement("a");
+        n.href = values.nexusmods;
+        n.target = "_blank";
+        n.rel = "noopener";
+        n.textContent = "NexusMods";
+        links.appendChild(n);
+      }
+      body.appendChild(links);
+    }
+
     card.appendChild(body);
     grid.appendChild(card);
   }
@@ -503,7 +544,7 @@
       loadExistingSlugs(ds).then(revalidate);
     });
 
-    ["f-dataset", "f-name", "f-authors", "f-description"].forEach(function (id) {
+    ["f-dataset", "f-name", "f-authors", "f-description", "f-youtube", "f-nexusmods"].forEach(function (id) {
       $(id).addEventListener("input", revalidate);
     });
     $("f-dataset").addEventListener("change", revalidate);

@@ -255,7 +255,8 @@
 
   var lightbox = {
     el: null, img: null, title: null, author: null, desc: null,
-    counter: null, tags: null, prev: null, next: null, download: null,
+    counter: null, tags: null, prev: null, next: null,
+    download: null, youtube: null, nexusmods: null,
     item: null, index: 0,
   };
 
@@ -265,6 +266,14 @@
       lightbox.title = el("h2", { class: "rsdw-lightbox__title" }, [""]),
       lightbox.author = el("span", { class: "rsdw-lightbox__author" }, [""]),
       el("div", { class: "rsdw-lightbox__spacer" }),
+      lightbox.youtube = el("a", {
+        class: "rsdw-lightbox__btn",
+        href: "#", target: "_blank", rel: "noopener",
+      }, ["YouTube"]),
+      lightbox.nexusmods = el("a", {
+        class: "rsdw-lightbox__btn",
+        href: "#", target: "_blank", rel: "noopener",
+      }, ["NexusMods"]),
       lightbox.download = el("a", {
         class: "rsdw-lightbox__btn rsdw-lightbox__btn--primary",
         href: "#", download: "", target: "_blank", rel: "noopener",
@@ -351,6 +360,18 @@
       lightbox.download.setAttribute("download", name + ".json");
     } else {
       lightbox.download.style.display = "none";
+    }
+    if (d.youtube) {
+      lightbox.youtube.href = d.youtube;
+      lightbox.youtube.style.display = "";
+    } else {
+      lightbox.youtube.style.display = "none";
+    }
+    if (d.nexusmods) {
+      lightbox.nexusmods.href = d.nexusmods;
+      lightbox.nexusmods.style.display = "";
+    } else {
+      lightbox.nexusmods.style.display = "none";
     }
     showLightboxImage();
     lightbox.el.hidden = false;

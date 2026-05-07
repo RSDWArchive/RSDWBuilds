@@ -151,6 +151,15 @@ def validate_card(folder: Path) -> list[str]:
     ):
         errors.append("'tags' must be a list of non-empty strings")
 
+    for link_field in ("youtube", "nexusmods"):
+        val = card.get(link_field)
+        if val is None or val == "":
+            continue
+        if not isinstance(val, str):
+            errors.append(f"'{link_field}' must be a string URL")
+        elif not (val.startswith("http://") or val.startswith("https://")):
+            errors.append(f"'{link_field}' must be an http(s) URL")
+
     image = card.get("image")
     images = card.get("images")
     img_list: list[str] = []

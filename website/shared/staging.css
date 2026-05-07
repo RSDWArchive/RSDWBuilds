@@ -63,6 +63,7 @@
 }
 
 .rsdw-field input[type="text"],
+.rsdw-field input[type="url"],
 .rsdw-field select,
 .rsdw-field textarea {
   width: 100%;
@@ -347,4 +348,29 @@
   border-radius: 999px;
   color: var(--rsdw-text);
   background: rgba(20, 20, 24, 0.7);
+}
+
+.rsdw-card__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+.rsdw-card__links a {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--rsdw-border);
+  border-radius: 999px;
+  background: rgba(20, 20, 24, 0.85);
+  color: var(--rsdw-text);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.rsdw-card__links a:hover {
+  border-color: var(--rsdw-accent);
+  background: var(--rsdw-accent-soft);
+  color: #fffaf0;
 }
