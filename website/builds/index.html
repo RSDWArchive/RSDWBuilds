@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Builds — RSDWBuilds.com</title>
+  <meta name="description" content="Full builds created by the community for Runescape: Dragonwilds." />
+  <link rel="apple-touch-icon" sizes="180x180" href="/shared/assets/favicon_io/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/shared/assets/favicon_io/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/shared/assets/favicon_io/favicon-16x16.png" />
+  <link rel="icon" href="/shared/assets/favicon_io/favicon.ico" />
+  <link rel="manifest" href="/shared/assets/favicon_io/site.webmanifest" />
+  <link rel="preload" href="https://fonts.gstatic.com/s/sofiasans/v20/Yq6T-LCVXSLy9uPBwlATrORKkzApcb8.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/shared/site-shell.css" />
+  <link rel="stylesheet" href="/shared/gallery.css" />
+</head>
+<body data-tool="builds" data-search-placeholder="Search builds, authors, tags...">
+  <div id="rsdw-header-mount"></div>
+
+  <main class="rsdw-gallery-page">
+    <div class="rsdw-gallery-toolbar">
+      <span class="rsdw-gallery-toolbar__count" id="rsdw-gallery-count"></span>
+    </div>
+    <div class="rsdw-gallery" id="rsdw-gallery"></div>
+    <nav class="rsdw-pagination" id="rsdw-pagination" aria-label="Pagination"></nav>
+  </main>
+
+  <div id="rsdw-footer-mount"></div>
+
+  <script>
+    window.RSDW_GALLERY_CONFIG = {
+      dataset: "builds",
+      pageSize: 24,
+      emptyText: "No builds match your search yet."
+    };
+  </script>
+  <script src="/shared/shared-header.js" defer></script>
+  <script src="/shared/search-match.js" defer></script>
+  <script src="/shared/gallery.js" defer></script>
+</body>
+</html>

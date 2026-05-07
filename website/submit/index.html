@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit a Build — RSDWBuilds.com</title>
+  <meta name="description" content="Package your build or prefab into a zip submission for RSDWBuilds.com." />
+  <link rel="apple-touch-icon" sizes="180x180" href="/shared/assets/favicon_io/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/shared/assets/favicon_io/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/shared/assets/favicon_io/favicon-16x16.png" />
+  <link rel="icon" href="/shared/assets/favicon_io/favicon.ico" />
+  <link rel="manifest" href="/shared/assets/favicon_io/site.webmanifest" />
+  <link rel="preload" href="https://fonts.gstatic.com/s/sofiasans/v20/Yq6T-LCVXSLy9uPBwlATrORKkzApcb8.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/shared/site-shell.css" />
+  <link rel="stylesheet" href="/shared/gallery.css" />
+  <link rel="stylesheet" href="/shared/staging.css" />
+</head>
+<body data-tool="submit">
+  <div id="rsdw-header-mount"></div>
+
+  <main class="rsdw-staging">
+    <header class="rsdw-staging__head">
+      <h1>Submit a Build or Prefab</h1>
+      <p>
+        Fill out the form, drag in your screenshots and the download file,
+        then download a packaged <code>.zip</code> and send it to a maintainer.
+        Everything happens in your browser &mdash; nothing is uploaded.
+      </p>
+    </header>
+
+    <form id="rsdw-staging-form" class="rsdw-staging__form" novalidate>
+      <fieldset class="rsdw-field">
+        <label for="f-dataset">Category</label>
+        <select id="f-dataset" required>
+          <option value="builds">Builds</option>
+          <option value="prefabs">Prefabs</option>
+        </select>
+      </fieldset>
+
+      <fieldset class="rsdw-field">
+        <label for="f-name">Name <span class="rsdw-req">*</span></label>
+        <input id="f-name" type="text" maxlength="80" required
+               placeholder="e.g. Cozy Riverside Cottage" />
+        <small>Shown as the card title.</small>
+      </fieldset>
+
+      <fieldset class="rsdw-field">
+        <label for="f-authors">Author(s) <span class="rsdw-req">*</span></label>
+        <input id="f-authors" type="text" required
+               placeholder="YourName, AnotherPerson" />
+        <small>Comma-separated.</small>
+      </fieldset>
+
+      <fieldset class="rsdw-field">
+        <label for="f-description">Description <span class="rsdw-req">*</span></label>
+        <textarea id="f-description" rows="4" maxlength="600" required
+                  placeholder="One or two sentences shown on the card and lightbox."></textarea>
+        <small><span id="f-description-count">0</span> / 600</small>
+      </fieldset>
+
+      <fieldset class="rsdw-field rsdw-auto">
+        <label>Auto-generated</label>
+        <small>Built from your inputs. Slug avoids collisions with existing entries.</small>
+        <dl class="rsdw-auto__list">
+          <dt>URL slug</dt>
+          <dd id="f-auto-slug"><span class="rsdw-auto__placeholder">(enter a name)</span></dd>
+          <dt>Tags</dt>
+          <dd id="f-auto-tags"><span class="rsdw-auto__placeholder">(none yet)</span></dd>
+        </dl>
+      </fieldset>
+
+      <fieldset class="rsdw-field">
+        <label>Images <span class="rsdw-req">*</span></label>
+        <small>Drop one or more screenshots. First image is the 16:9 cover. JPG / PNG / WEBP up to 10&nbsp;MB each.</small>
+        <div id="f-images-drop" class="rsdw-drop" tabindex="0">
+          <p class="rsdw-drop__label">
+            Drop images here, or
+            <button type="button" class="rsdw-drop__btn" id="f-images-pick">choose files</button>
+          </p>
+          <input id="f-images-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple hidden />
+        </div>
+        <ul id="f-images-list" class="rsdw-filelist" aria-label="Selected images"></ul>
+      </fieldset>
+
+      <fieldset class="rsdw-field">
+        <label>Download file <span class="rsdw-req">*</span></label>
+        <small>The actual save / build users will download (a <code>.json</code>).</small>
+        <div id="f-download-drop" class="rsdw-drop" tabindex="0">
+          <p class="rsdw-drop__label">
+            Drop the file here, or
+            <button type="button" class="rsdw-drop__btn" id="f-download-pick">choose a file</button>
+          </p>
+          <input id="f-download-input" type="file" hidden />
+        </div>
+        <ul id="f-download-list" class="rsdw-filelist" aria-label="Selected download file"></ul>
+      </fieldset>
+
+      <div id="f-issues" class="rsdw-issues" hidden></div>
+
+      <div class="rsdw-staging__actions">
+        <button type="button" id="f-preview-btn" class="rsdw-btn">Preview card</button>
+        <button type="submit" id="f-submit-btn" class="rsdw-btn rsdw-btn--primary" disabled>
+          Download .zip
+        </button>
+      </div>
+
+      <p class="rsdw-staging__hint">
+        After downloading, send the zip to a maintainer (Discord, email, or attach
+        it to a GitHub issue). They will run <code>tools/validate_and_promote.py</code>
+        to publish it on the site.
+      </p>
+    </form>
+
+    <section class="rsdw-staging__preview" id="f-preview" hidden>
+      <h2>Card preview</h2>
+      <div class="rsdw-gallery" id="f-preview-grid"></div>
+    </section>
+  </main>
+
+  <div id="rsdw-footer-mount"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" defer></script>
+  <script src="/shared/shared-header.js" defer></script>
+  <script src="/shared/staging.js" defer></script>
+</body>
+</html>

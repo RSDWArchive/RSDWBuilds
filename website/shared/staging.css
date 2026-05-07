@@ -1,0 +1,350 @@
+/* === Staging / submit page === */
+
+.rsdw-staging {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 1.6rem 1.4rem 2.4rem;
+}
+
+.rsdw-staging__head h1 {
+  margin: 0 0 0.4rem;
+  font-size: clamp(1.6rem, 3vw, 2rem);
+  letter-spacing: 0.02em;
+}
+
+.rsdw-staging__head p {
+  margin: 0 0 1.6rem;
+  color: var(--rsdw-muted);
+  line-height: 1.5;
+}
+
+.rsdw-staging__head code,
+.rsdw-staging__hint code {
+  font-family: "Consolas", "Menlo", "Courier New", monospace;
+  font-size: 0.9em;
+  padding: 1px 6px;
+  border: 1px solid var(--rsdw-border);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #ffe9b3;
+}
+
+.rsdw-staging__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  border: 1px solid var(--rsdw-border);
+  border-radius: 14px;
+  background: var(--rsdw-surface);
+  padding: 1.4rem 1.4rem 1.6rem;
+}
+
+.rsdw-field {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.rsdw-field > label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--rsdw-text);
+}
+
+.rsdw-field > small {
+  color: var(--rsdw-muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.rsdw-field input[type="text"],
+.rsdw-field select,
+.rsdw-field textarea {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--rsdw-border);
+  border-radius: 8px;
+  background: rgba(20, 20, 24, 0.9);
+  color: var(--rsdw-text);
+  font: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.rsdw-field textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.rsdw-field input:focus,
+.rsdw-field select:focus,
+.rsdw-field textarea:focus {
+  border-color: var(--rsdw-accent);
+}
+
+.rsdw-field input[aria-invalid="true"] {
+  border-color: #c75c5c;
+}
+
+.rsdw-req {
+  color: #d8a35a;
+  font-weight: 700;
+}
+
+/* Drop zones */
+
+.rsdw-drop {
+  border: 1.5px dashed var(--rsdw-border);
+  border-radius: 10px;
+  padding: 1.2rem 1rem;
+  background: rgba(20, 20, 24, 0.55);
+  text-align: center;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  cursor: default;
+}
+
+.rsdw-drop.is-dragover {
+  border-color: var(--rsdw-accent);
+  background: var(--rsdw-accent-soft);
+}
+
+.rsdw-drop__label {
+  margin: 0;
+  color: var(--rsdw-muted);
+  font-size: 0.92rem;
+}
+
+.rsdw-drop__btn {
+  border: none;
+  background: none;
+  color: var(--rsdw-accent);
+  font: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.rsdw-drop__btn:hover {
+  color: #fffaf0;
+}
+
+/* File lists */
+
+.rsdw-filelist {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.rsdw-filelist:empty {
+  display: none;
+}
+
+.rsdw-filelist li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--rsdw-border);
+  border-radius: 8px;
+  background: rgba(20, 20, 24, 0.7);
+  font-size: 0.85rem;
+}
+
+.rsdw-filelist__thumb {
+  width: 48px;
+  height: 27px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+  background: #000;
+}
+
+.rsdw-filelist__name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--rsdw-text);
+}
+
+.rsdw-filelist__size {
+  color: var(--rsdw-muted);
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.rsdw-filelist__cover {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.1rem 0.45rem;
+  border: 1px solid var(--rsdw-accent);
+  border-radius: 999px;
+  color: var(--rsdw-accent);
+  background: var(--rsdw-accent-soft);
+}
+
+.rsdw-filelist__remove {
+  border: 1px solid var(--rsdw-border);
+  border-radius: 6px;
+  background: rgba(20, 20, 24, 0.9);
+  color: var(--rsdw-text);
+  width: 26px;
+  height: 26px;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.rsdw-filelist__remove:hover {
+  border-color: var(--rsdw-accent);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Issues panel */
+
+.rsdw-issues {
+  border: 1px solid #c75c5c;
+  background: rgba(199, 92, 92, 0.12);
+  color: #ffd2c8;
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.rsdw-issues[hidden] { display: none; }
+
+.rsdw-issues ul {
+  margin: 0.3rem 0 0;
+  padding-left: 1.2rem;
+}
+
+/* Buttons */
+
+.rsdw-staging__actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 0.4rem;
+}
+
+.rsdw-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.1rem;
+  border: 1px solid var(--rsdw-border);
+  border-radius: 10px;
+  background: rgba(20, 20, 24, 0.9);
+  color: var(--rsdw-text);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.rsdw-btn:hover:not(:disabled) {
+  border-color: var(--rsdw-accent);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.rsdw-btn--primary {
+  border-color: var(--rsdw-accent);
+  background: var(--rsdw-accent-soft);
+  color: #fffaf0;
+}
+
+.rsdw-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.rsdw-staging__hint {
+  margin: 0.4rem 0 0;
+  color: var(--rsdw-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.rsdw-staging__preview {
+  margin-top: 2rem;
+}
+
+.rsdw-staging__preview h2 {
+  font-size: 1.1rem;
+  margin: 0 0 0.7rem;
+  letter-spacing: 0.04em;
+}
+
+.rsdw-staging__preview .rsdw-gallery {
+  grid-template-columns: minmax(220px, 320px);
+  justify-content: start;
+}
+
+/* Auto-derived info block (slug + tags) */
+.rsdw-auto__list {
+  margin: 0.4rem 0 0;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.35rem 0.85rem;
+  font-size: 0.9rem;
+}
+.rsdw-auto__list dt {
+  color: var(--rsdw-muted);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  align-self: center;
+}
+.rsdw-auto__list dd {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  align-items: center;
+  min-width: 0;
+}
+.rsdw-auto__placeholder {
+  color: var(--rsdw-muted);
+  font-style: italic;
+  font-size: 0.85rem;
+}
+.rsdw-auto__slug {
+  font-family: "Consolas", "Menlo", "Courier New", monospace;
+  font-size: 0.88rem;
+  color: #ffe9b3;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--rsdw-border);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+.rsdw-auto__slug-note {
+  color: var(--rsdw-muted);
+  font-size: 0.78rem;
+}
+.rsdw-auto__tag {
+  font-size: 0.78rem;
+  padding: 0.18rem 0.55rem;
+  border: 1px solid var(--rsdw-border);
+  border-radius: 999px;
+  color: var(--rsdw-text);
+  background: rgba(20, 20, 24, 0.7);
+}
