@@ -344,6 +344,10 @@ html.rsdw body.rsdw-no-offset {
   flex-shrink: 0;
 }
 
+.rsdw-landing__tile[data-tool="dev-kit"] img {
+  transform: scale(0.75);
+}
+
 .rsdw-landing__tile-label {
   display: flex;
   flex-direction: column;

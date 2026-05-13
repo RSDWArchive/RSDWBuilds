@@ -32,6 +32,32 @@
       href: "/prefabs/",
       icon: "/shared/assets/page-icons/Prefabs.png",
     },
+    {
+      id: "base-builder",
+      name: "Base Builder",
+      pageLabel: "Base Builder",
+      desc: "Create Bases in Blender",
+      href: "https://www.nexusmods.com/runescapedragonwilds/mods/231",
+      icon: "/shared/assets/page-icons/BaseBuilder.png",
+      external: true,
+    },
+    {
+      id: "dev-kit",
+      name: "Dev Kit",
+      pageLabel: "Dev Kit",
+      desc: "RSDW Dev Kit is required to import/export builds.",
+      href: "https://www.nexusmods.com/games/runescapedragonwilds/mods/238",
+      icon: "/shared/assets/logo.png",
+      external: true,
+    },
+    {
+      id: "submit",
+      name: "Submit",
+      pageLabel: "Submit",
+      desc: "Submit a Build or a Prefab",
+      href: "/submit/",
+      icon: "/shared/assets/page-icons/Submit.png",
+    },
   ];
 
   var REPO_URL = "https://github.com/RSDWArchive/RSDWBuilds";
@@ -174,13 +200,13 @@
     );
     var menuChildren = TOOLS.map(function (t) {
       var attrs = { href: t.href, role: "menuitem" };
+      if (t.external) {
+        attrs.target = "_blank";
+        attrs.rel = "noopener noreferrer";
+      }
       if (t.id === activeTool) attrs.class = "is-active";
       return el("a", attrs, [el("img", { src: t.icon, alt: "" }), t.name]);
     });
-    var submitAttrs = { href: "/submit/", role: "menuitem", class: "rsdw-tools__menu-submit" };
-    if (activeTool === "submit") submitAttrs.class += " is-active";
-    var submitIcon = el("span", { class: "rsdw-tools__menu-icon", "aria-hidden": "true", html: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>' });
-    menuChildren.push(el("a", submitAttrs, [submitIcon, "Submit"]));
     var menu = el(
       "div",
       { class: "rsdw-tools__menu", id: "rsdw-tools-menu", role: "menu", hidden: "" },
