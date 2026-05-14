@@ -46,7 +46,7 @@
       name: "Dev Kit",
       pageLabel: "Dev Kit",
       desc: "RSDW Dev Kit is required to import/export builds.",
-      href: "https://www.nexusmods.com/games/runescapedragonwilds/mods/238",
+      href: "https://www.nexusmods.com/runescapedragonwilds/mods/238",
       icon: "/shared/assets/logo.png",
       external: true,
     },
