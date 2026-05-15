@@ -33,6 +33,14 @@
       icon: "/shared/assets/page-icons/Prefabs.png",
     },
     {
+      id: "converter",
+      name: "Tier Converter",
+      pageLabel: "Tier Converter",
+      desc: "Swap T1/T2/T3 pieces inside a build .json.",
+      href: "/converter/",
+      icon: "/shared/assets/page-icons/Converter.png",
+    },
+    {
       id: "base-builder",
       name: "Base Builder",
       pageLabel: "Base Builder",

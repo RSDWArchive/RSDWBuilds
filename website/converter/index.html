@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tier Converter — RSDWBuilds.com</title>
+  <meta name="description" content="Swap Tier 1 / Tier 2 / Tier 3 building pieces inside a Dragonwilds build .json." />
+  <link rel="apple-touch-icon" sizes="180x180" href="/shared/assets/favicon_io/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/shared/assets/favicon_io/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/shared/assets/favicon_io/favicon-16x16.png" />
+  <link rel="icon" href="/shared/assets/favicon_io/favicon.ico" />
+  <link rel="manifest" href="/shared/assets/favicon_io/site.webmanifest" />
+  <link rel="preload" href="https://fonts.gstatic.com/s/sofiasans/v20/Yq6T-LCVXSLy9uPBwlATrORKkzApcb8.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/shared/site-shell.css" />
+  <link rel="stylesheet" href="/shared/staging.css" />
+  <link rel="stylesheet" href="/shared/converter.css" />
+</head>
+<body data-tool="converter">
+  <div id="rsdw-header-mount"></div>
+
+  <main class="rsdw-staging">
+    <header class="rsdw-staging__head">
+      <h1>Tier Converter</h1>
+      <p>
+        Drop a Dragonwilds build <code>.json</code> below and swap any
+        Tier&nbsp;1 / Tier&nbsp;2 / Tier&nbsp;3 pieces in any direction.
+        Pieces with no tier equivalent are left untouched. Everything happens
+        in your browser &mdash; nothing is uploaded.
+      </p>
+    </header>
+
+    <section class="rsdw-conv__drop" id="rsdw-conv-drop" tabindex="0"
+             aria-label="Drop a build .json file or click to browse">
+      <input type="file" id="rsdw-conv-file" accept=".json,application/json" hidden />
+      <p class="rsdw-conv__drop-title">Drop a build <code>.json</code> here, or click to browse.</p>
+      <p class="rsdw-conv__drop-sub">No upload &mdash; the file stays on your machine.</p>
+    </section>
+
+    <section class="rsdw-conv__panel" id="rsdw-conv-panel" hidden>
+      <header class="rsdw-conv__panel-head">
+        <div>
+          <strong id="rsdw-conv-filename">build.json</strong>
+          <span id="rsdw-conv-summary" class="rsdw-conv__summary"></span>
+        </div>
+        <button type="button" id="rsdw-conv-clear" class="rsdw-link-btn">Clear</button>
+      </header>
+
+      <div class="rsdw-conv__breakdown" id="rsdw-conv-breakdown"></div>
+
+      <div class="rsdw-conv__controls" id="rsdw-conv-controls">
+        <h2>Tier swaps</h2>
+        <p class="rsdw-conv__hint">
+          For each source tier, choose what it should become. Leave on
+          <em>(no change)</em> to preserve that tier as-is.
+        </p>
+        <div class="rsdw-conv__rows" id="rsdw-conv-rows"></div>
+
+        <h2>Categories</h2>
+        <p class="rsdw-conv__hint">
+          Only checked categories will be converted. Uncheck a category to
+          leave its pieces alone (e.g. swap walls but keep your foundations).
+        </p>
+        <div class="rsdw-conv__cats" id="rsdw-conv-cats"></div>
+
+        <div class="rsdw-conv__actions">
+          <button type="button" id="rsdw-conv-run" class="rsdw-conv__primary" disabled>
+            Convert &amp; download
+          </button>
+        </div>
+      </div>
+
+      <div class="rsdw-conv__report" id="rsdw-conv-report" hidden></div>
+    </section>
+  </main>
+
+  <div id="rsdw-footer-mount"></div>
+
+  <script src="/shared/shared-header.js" defer></script>
+  <script src="/shared/converter.js" defer></script>
+</body>
+</html>
