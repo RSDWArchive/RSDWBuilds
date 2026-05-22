@@ -29,6 +29,7 @@ import json
 import re
 import shutil
 import sys
+import time
 import zipfile
 from pathlib import Path
 
@@ -205,10 +206,23 @@ def validate_card(folder: Path) -> list[str]:
 def rebuild_index(dataset: str) -> Path:
     root = DATA / dataset
     root.mkdir(parents=True, exist_ok=True)
-    slugs = sorted(
-        p.name for p in root.iterdir()
-        if p.is_dir() and (p / "build.json").is_file()
-    )
+    rows: list[tuple[int, str]] = []
+    for p in root.iterdir():
+        if not p.is_dir():
+            continue
+        card_path = p / "build.json"
+        if not card_path.is_file():
+            continue
+        try:
+            card = json.loads(card_path.read_text(encoding="utf-8"))
+            ts = int(card.get("published_unix") or 0)
+        except (json.JSONDecodeError, OSError, TypeError, ValueError):
+            ts = 0
+        rows.append((ts, p.name))
+    # Newest first; entries without a timestamp fall to the end, then
+    # alphabetically by slug for a stable order.
+    rows.sort(key=lambda r: (-r[0], r[1]))
+    slugs = [name for _, name in rows]
     idx = root / "index.json"
     idx.write_text(
         json.dumps({"entries": slugs}, indent=2) + "\n", encoding="utf-8"
@@ -276,6 +290,17 @@ def main() -> int:
             shutil.rmtree(target, ignore_errors=True)
             failed += 1
             continue
+
+        # Stamp publish time so galleries can sort newest-first.
+        card_path = target / "build.json"
+        try:
+            card = json.loads(card_path.read_text(encoding="utf-8"))
+            card["published_unix"] = int(time.time())
+            card_path.write_text(
+                json.dumps(card, indent=2) + "\n", encoding="utf-8"
+            )
+        except (json.JSONDecodeError, OSError) as exc:
+            print(f"  [WARN]      could not stamp published_unix: {exc}")
 
         print(f"  [PUBLISHED] {zp.name} -> {target.relative_to(REPO)}")
         published.setdefault(dataset, []).append(slug)

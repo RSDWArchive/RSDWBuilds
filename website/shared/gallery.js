@@ -134,10 +134,7 @@
         return it.haystack.indexOf(ql) >= 0;
       });
     }
-    // Sort by name for stable ordering.
-    state.filtered.sort(function (a, b) {
-      return (a.data.name || a.slug).localeCompare(b.data.name || b.slug);
-    });
+    // Preserve manifest order (newest-first from index.json).
     state.page = 1;
     render();
   }
