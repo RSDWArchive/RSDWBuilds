@@ -1,0 +1,20 @@
+{
+  "name": "Tailor Shop",
+  "description": "A Tailors Shop",
+  "authors": [
+    "FriZ"
+  ],
+  "tags": [
+    "prefab",
+    "tailor",
+    "shop",
+    "by-friz"
+  ],
+  "image": "TailorShop_01.jpg",
+  "images": [
+    "TailorShop_01.jpg",
+    "TailorShop_02.jpg"
+  ],
+  "download": "TailorShop.json",
+  "published_unix": 1780436152
+}

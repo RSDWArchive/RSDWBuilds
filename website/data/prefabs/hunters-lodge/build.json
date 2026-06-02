@@ -1,0 +1,20 @@
+{
+  "name": "Hunters Lodge",
+  "description": "A Hunters Lodge",
+  "authors": [
+    "FriZ"
+  ],
+  "tags": [
+    "prefab",
+    "hunters",
+    "lodge",
+    "by-friz"
+  ],
+  "image": "HuntersLodge_01.jpg",
+  "images": [
+    "HuntersLodge_01.jpg",
+    "HuntersLodge_02.jpg"
+  ],
+  "download": "HuntersLodge.json",
+  "published_unix": 1780436152
+}
