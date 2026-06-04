@@ -70,6 +70,7 @@
   var HIDDEN_PAGE_LABELS = {
     upload: "Upload",
     manage: "Manage",
+    admin: "Admin",
   };
 
   var REPO_URL = "https://github.com/RSDWArchive/RSDWBuilds";
@@ -212,7 +213,7 @@
       [el("img", { src: "/shared/assets/tools-menu.png", alt: "" })]
     );
     var menuChildren = TOOLS.map(function (t) {
-      var attrs = { href: t.href, role: "menuitem" };
+      var attrs = { href: t.href, role: "menuitem", "data-tool": t.id };
       if (t.external) {
         attrs.target = "_blank";
         attrs.rel = "noopener noreferrer";

@@ -106,6 +106,21 @@ export async function requireManager(req: Request): Promise<{ user: any; usernam
   return { user, username };
 }
 
+export async function requireAdmin(req: Request): Promise<{ user: any; username: string }> {
+  const user = await requireUser(req);
+  const username = githubUsernameFromUser(user);
+  if (!username) throw new AuthError("GitHub username was not available in the signed-in profile.");
+  const { data, error } = await supabaseAdmin
+    .from("approved_admins")
+    .select("github_username")
+    .eq("github_username", username)
+    .eq("active", true)
+    .maybeSingle();
+  if (error) throw error;
+  if (!data) throw new AuthError("This GitHub account is not approved for administration.");
+  return { user, username };
+}
+
 function privateKey(): string {
   const direct = Deno.env.get("GITHUB_PRIVATE_KEY");
   if (direct) return direct.replace(/\\n/g, "\n");
@@ -209,4 +224,9 @@ export async function dispatchWorkflow(token: string, workflowId: string, inputs
 export async function recordManagementAction(row: JsonRecord): Promise<void> {
   const { error } = await supabaseAdmin.from("management_actions").insert(row);
   if (error) console.warn("[management] audit failed", error);
+}
+
+export async function recordAdminAction(row: JsonRecord): Promise<void> {
+  const { error } = await supabaseAdmin.from("admin_actions").insert(row);
+  if (error) console.warn("[admin] audit failed", error);
 }

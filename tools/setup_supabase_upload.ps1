@@ -115,7 +115,7 @@ if (-not $SkipSecrets) {
 
 if (-not $SkipFunction) {
   Write-Host "Deploying Edge Functions..."
-  npx supabase functions deploy upload-submission manage-entries replace-entry manage-media --project-ref $ProjectRef --use-api --no-verify-jwt
+  npx supabase functions deploy upload-submission manage-entries replace-entry manage-media admin-users --project-ref $ProjectRef --use-api --no-verify-jwt
 }
 
 Write-Host "Supabase backend setup complete."

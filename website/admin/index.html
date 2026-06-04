@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin &mdash; RSDWBuilds.com</title>
+  <meta name="description" content="Staff permission admin panel for RSDWBuilds.com." />
+  <link rel="apple-touch-icon" sizes="180x180" href="/shared/assets/favicon_io/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/shared/assets/favicon_io/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/shared/assets/favicon_io/favicon-16x16.png" />
+  <link rel="icon" href="/shared/assets/favicon_io/favicon.ico" />
+  <link rel="manifest" href="/shared/assets/favicon_io/site.webmanifest" />
+  <link rel="preload" href="https://fonts.gstatic.com/s/sofiasans/v20/Yq6T-LCVXSLy9uPBwlATrORKkzApcb8.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/shared/site-shell.css" />
+  <link rel="stylesheet" href="/shared/staging.css" />
+  <link rel="stylesheet" href="/shared/admin.css" />
+</head>
+<body data-tool="admin">
+  <div id="rsdw-header-mount"></div>
+
+  <main class="rsdw-admin">
+    <header class="rsdw-staging__head">
+      <h1>Staff Permissions</h1>
+      <p>Manage access for Upload and Manage.</p>
+    </header>
+
+    <section class="rsdw-staging__form rsdw-admin__auth" aria-live="polite">
+      <div id="rsdw-admin-signed-out" class="rsdw-admin__auth-row">
+        <div>
+          <strong>Admin access</strong>
+          <span>Use an approved GitHub account.</span>
+        </div>
+        <button type="button" id="rsdw-admin-login" class="rsdw-btn rsdw-btn--primary">Sign in with GitHub</button>
+      </div>
+      <div id="rsdw-admin-signed-in" class="rsdw-admin__auth-row" hidden>
+        <img id="rsdw-admin-avatar" class="rsdw-admin__avatar" alt="" />
+        <div>
+          <strong id="rsdw-admin-name">Signed in</strong>
+          <span id="rsdw-admin-username"></span>
+        </div>
+        <button type="button" id="rsdw-admin-logout" class="rsdw-btn">Sign out</button>
+      </div>
+    </section>
+
+    <section id="rsdw-admin-panel" class="rsdw-admin__panel" hidden>
+      <section class="rsdw-staging__form rsdw-admin__add">
+        <fieldset class="rsdw-field">
+          <label for="rsdw-admin-new-username">GitHub username</label>
+          <input id="rsdw-admin-new-username" type="text" autocomplete="off" placeholder="github-username" />
+        </fieldset>
+        <label class="rsdw-admin__check">
+          <input id="rsdw-admin-new-uploader" type="checkbox" checked />
+          <span>Upload access</span>
+        </label>
+        <label class="rsdw-admin__check">
+          <input id="rsdw-admin-new-manager" type="checkbox" />
+          <span>Manage access</span>
+        </label>
+        <button type="button" id="rsdw-admin-add-user" class="rsdw-btn rsdw-btn--primary">Add user</button>
+      </section>
+
+      <section class="rsdw-staging__form rsdw-admin__users">
+        <div class="rsdw-admin__toolbar">
+          <input id="rsdw-admin-search" class="rsdw-admin__search" type="search" placeholder="Search users..." autocomplete="off" />
+          <button type="button" id="rsdw-admin-refresh" class="rsdw-btn">Refresh</button>
+        </div>
+        <div id="rsdw-admin-users" class="rsdw-admin__list" aria-live="polite"></div>
+      </section>
+    </section>
+
+    <div id="rsdw-admin-status" class="rsdw-upload__status" role="status" hidden></div>
+  </main>
+
+  <div id="rsdw-footer-mount"></div>
+
+  <script src="/shared/shared-header.js" defer></script>
+  <script type="module" src="/shared/admin.js"></script>
+</body>
+</html>

@@ -124,7 +124,10 @@
     host.replaceChildren.apply(host, children.filter(Boolean));
   }
 
-  var lightbox = { el: null, img: null, counter: null, title: null, imgs: [], data: null, index: 0 };
+  var lightbox = {
+    el: null, img: null, counter: null, title: null, prev: null, next: null,
+    imgs: [], data: null, index: 0,
+  };
 
   function ensureLightbox() {
     if (lightbox.el) return;
@@ -142,14 +145,14 @@
           onclick: closeLightbox,
         }, ["\u00d7"]),
       ]),
-      el("button", {
+      lightbox.prev = el("button", {
         class: "rsdw-lightbox__nav rsdw-lightbox__nav--prev",
         type: "button",
         "aria-label": "Previous image",
         onclick: function (e) { e.stopPropagation(); navigate(-1); },
       }, ["\u2039"]),
       lightbox.img,
-      el("button", {
+      lightbox.next = el("button", {
         class: "rsdw-lightbox__nav rsdw-lightbox__nav--next",
         type: "button",
         "aria-label": "Next image",
@@ -187,6 +190,9 @@
     lightbox.counter.textContent = lightbox.imgs.length > 1
       ? (lightbox.index + 1) + " / " + lightbox.imgs.length
       : "";
+    var multi = lightbox.imgs.length > 1;
+    lightbox.prev.hidden = !multi;
+    lightbox.next.hidden = !multi;
   }
 
   function navigate(delta) {

@@ -2,7 +2,8 @@
 
 This project uses Supabase Auth for GitHub sign-in and a Supabase Edge Function
 to upload approved contributor zips into the GitHub publishing queue. It also
-uses separate manager approval for the hidden `/manage/` panel.
+uses separate manager approval for the hidden `/manage/` panel and admin
+approval for the hidden `/admin/` permissions panel.
 
 ## Required Setup
 
@@ -20,6 +21,13 @@ values ('github-username', 'maintainer approved');
 ```sql
 insert into public.approved_managers (github_username, note)
 values ('github-username', 'manager approved');
+```
+
+5. Insert approved admin GitHub usernames in lowercase:
+
+```sql
+insert into public.approved_admins (github_username, note)
+values ('github-username', 'admin approved');
 ```
 
 ## Managing Approved Uploaders
@@ -74,6 +82,34 @@ where github_username = 'githubusername';
 ```
 
 Management actions are recorded in `public.management_actions`.
+
+## Managing Approved Admins
+
+Admins use the hidden `/admin/` page to grant or revoke upload and management
+access. Admin access itself is not editable from the website; use a migration
+or Supabase SQL for admin membership changes.
+
+Add or reactivate an admin:
+
+```sql
+insert into public.approved_admins (github_username, note)
+values ('githubusername', 'approved admin')
+on conflict (github_username) do update
+set active = true,
+    note = excluded.note,
+    updated_at = now();
+```
+
+Revoke admin access:
+
+```sql
+update public.approved_admins
+set active = false,
+    updated_at = now()
+where github_username = 'githubusername';
+```
+
+Admin permission actions are recorded in `public.admin_actions`.
 
 ## GitHub App
 
