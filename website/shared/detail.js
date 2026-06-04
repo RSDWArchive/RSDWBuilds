@@ -78,7 +78,7 @@
     var author = authorsString(data.authors || []);
     var downloadName = title.replace(/[^a-z0-9]+/gi, "_") + ".json";
 
-    host.replaceChildren(
+    var children = [
       el("div", { class: "rsdw-detail__crumb" }, [
         el("a", { href: "/" + dataset + "/" }, [dataset === "builds" ? "Builds" : "Prefabs"]),
         " / ",
@@ -120,7 +120,8 @@
               }, [el("img", { src: joinPath(img), alt: title + " screenshot " + (idx + 1) })]);
             }))
         : null
-    );
+    ];
+    host.replaceChildren.apply(host, children.filter(Boolean));
   }
 
   var lightbox = { el: null, img: null, counter: null, title: null, imgs: [], data: null, index: 0 };
