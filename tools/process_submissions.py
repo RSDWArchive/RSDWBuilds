@@ -203,12 +203,26 @@ def validate_card(folder: Path) -> list[str]:
     return errors
 
 
-def rebuild_index(dataset: str) -> Path:
+def rebuild_index(dataset: str, force_include: list[str] | None = None) -> Path:
     root = DATA / dataset
     root.mkdir(parents=True, exist_ok=True)
+    force_include = force_include or []
+    idx = root / "index.json"
+    visible_slugs: set[str] | None = None
+    if idx.is_file():
+        try:
+            current = json.loads(idx.read_text(encoding="utf-8"))
+            visible_slugs = set(current.get("entries") or current.get(dataset) or [])
+        except (json.JSONDecodeError, OSError):
+            visible_slugs = None
+    if visible_slugs is not None:
+        visible_slugs.update(force_include)
+
     rows: list[tuple[int, str]] = []
     for p in root.iterdir():
         if not p.is_dir():
+            continue
+        if visible_slugs is not None and p.name not in visible_slugs:
             continue
         card_path = p / "build.json"
         if not card_path.is_file():
@@ -223,7 +237,6 @@ def rebuild_index(dataset: str) -> Path:
     # alphabetically by slug for a stable order.
     rows.sort(key=lambda r: (-r[0], r[1]))
     slugs = [name for _, name in rows]
-    idx = root / "index.json"
     idx.write_text(
         json.dumps({"entries": slugs}, indent=2) + "\n", encoding="utf-8"
     )
@@ -307,7 +320,7 @@ def main() -> int:
         archive_zip(zp, batch_root)
 
     for dataset, slugs in published.items():
-        idx = rebuild_index(dataset)
+        idx = rebuild_index(dataset, slugs)
         print(f"  rebuilt {idx.relative_to(REPO)} (+{len(slugs)})")
 
     total_pub = sum(len(v) for v in published.values())

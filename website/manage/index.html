@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manage &mdash; RSDWBuilds.com</title>
+  <meta name="description" content="Staff management panel for RSDWBuilds.com entries." />
+  <link rel="apple-touch-icon" sizes="180x180" href="/shared/assets/favicon_io/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/shared/assets/favicon_io/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/shared/assets/favicon_io/favicon-16x16.png" />
+  <link rel="icon" href="/shared/assets/favicon_io/favicon.ico" />
+  <link rel="manifest" href="/shared/assets/favicon_io/site.webmanifest" />
+  <link rel="preload" href="https://fonts.gstatic.com/s/sofiasans/v20/Yq6T-LCVXSLy9uPBwlATrORKkzApcb8.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/shared/site-shell.css" />
+  <link rel="stylesheet" href="/shared/staging.css" />
+  <link rel="stylesheet" href="/shared/manage.css" />
+</head>
+<body data-tool="manage">
+  <div id="rsdw-header-mount"></div>
+
+  <main class="rsdw-manage">
+    <header class="rsdw-staging__head">
+      <h1>Manage Entries</h1>
+      <p>Edit metadata, visibility, and replacement packages.</p>
+    </header>
+
+    <section class="rsdw-staging__form rsdw-manage__auth" aria-live="polite">
+      <div id="rsdw-manage-signed-out" class="rsdw-manage__auth-row">
+        <div>
+          <strong>Manager access</strong>
+          <span>Use an approved GitHub account.</span>
+        </div>
+        <button type="button" id="rsdw-manage-login" class="rsdw-btn rsdw-btn--primary">Sign in with GitHub</button>
+      </div>
+      <div id="rsdw-manage-signed-in" class="rsdw-manage__auth-row" hidden>
+        <img id="rsdw-manage-avatar" class="rsdw-manage__avatar" alt="" />
+        <div>
+          <strong id="rsdw-manage-name">Signed in</strong>
+          <span id="rsdw-manage-username"></span>
+        </div>
+        <button type="button" id="rsdw-manage-logout" class="rsdw-btn">Sign out</button>
+      </div>
+    </section>
+
+    <section id="rsdw-manage-panel" class="rsdw-manage__grid" hidden>
+      <section class="rsdw-staging__form rsdw-manage__entries">
+        <div class="rsdw-manage__toolbar">
+          <div class="rsdw-manage__tabs" role="tablist" aria-label="Dataset">
+            <button type="button" data-dataset="builds" class="is-active">Builds</button>
+            <button type="button" data-dataset="prefabs">Prefabs</button>
+          </div>
+          <input id="rsdw-manage-search" class="rsdw-manage__search" type="search" placeholder="Search entries..." autocomplete="off" />
+        </div>
+        <div id="rsdw-manage-list" class="rsdw-manage__list" aria-live="polite"></div>
+      </section>
+
+      <section id="rsdw-manage-editor" class="rsdw-staging__form rsdw-manage__editor" hidden>
+        <header class="rsdw-manage__editor-head">
+          <div>
+            <h2 id="rsdw-manage-editor-title">Entry</h2>
+            <span id="rsdw-manage-editor-slug"></span>
+          </div>
+          <a id="rsdw-manage-view" class="rsdw-btn" href="#" target="_blank" rel="noopener">View</a>
+        </header>
+
+        <fieldset class="rsdw-field">
+          <label for="rsdw-manage-name-field">Name</label>
+          <input id="rsdw-manage-name-field" type="text" maxlength="80" />
+        </fieldset>
+        <fieldset class="rsdw-field">
+          <label for="rsdw-manage-authors-field">Authors</label>
+          <input id="rsdw-manage-authors-field" type="text" placeholder="Name, Another" />
+        </fieldset>
+        <fieldset class="rsdw-field">
+          <label for="rsdw-manage-description-field">Description</label>
+          <textarea id="rsdw-manage-description-field" rows="4" maxlength="600"></textarea>
+        </fieldset>
+        <fieldset class="rsdw-field">
+          <label for="rsdw-manage-tags-field">Tags</label>
+          <input id="rsdw-manage-tags-field" type="text" placeholder="tag, another-tag" />
+        </fieldset>
+        <fieldset class="rsdw-field">
+          <label for="rsdw-manage-youtube-field">YouTube</label>
+          <input id="rsdw-manage-youtube-field" type="url" />
+        </fieldset>
+        <fieldset class="rsdw-field">
+          <label for="rsdw-manage-nexusmods-field">NexusMods</label>
+          <input id="rsdw-manage-nexusmods-field" type="url" />
+        </fieldset>
+
+        <div id="rsdw-manage-issues" class="rsdw-issues" hidden></div>
+        <div class="rsdw-staging__actions">
+          <button type="button" id="rsdw-manage-save" class="rsdw-btn rsdw-btn--primary">Save metadata</button>
+          <button type="button" id="rsdw-manage-visibility" class="rsdw-btn">Hide</button>
+        </div>
+
+        <fieldset class="rsdw-field rsdw-manage__replace">
+          <label>Replacement zip</label>
+          <small>Must use the same dataset and slug.</small>
+          <div id="rsdw-manage-drop" class="rsdw-drop" tabindex="0">
+            <p class="rsdw-drop__label">
+              Drop a zip here, or
+              <button type="button" class="rsdw-drop__btn" id="rsdw-manage-pick">choose a file</button>
+            </p>
+            <input id="rsdw-manage-file" type="file" accept=".zip,application/zip,application/x-zip-compressed" hidden />
+          </div>
+          <ul id="rsdw-manage-file-list" class="rsdw-filelist"></ul>
+          <button type="button" id="rsdw-manage-replace" class="rsdw-btn" disabled>Queue replacement</button>
+        </fieldset>
+
+        <div id="rsdw-manage-status" class="rsdw-upload__status" role="status" hidden></div>
+      </section>
+    </section>
+  </main>
+
+  <div id="rsdw-footer-mount"></div>
+
+  <script src="/shared/shared-header.js" defer></script>
+  <script type="module" src="/shared/manage.js"></script>
+</body>
+</html>

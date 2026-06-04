@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - website/**
+      - tools/generate_site_assets.py
       - .github/workflows/deploy-pages.yml
   workflow_dispatch:
 
@@ -27,6 +28,13 @@ jobs:
         with:
           sparse-checkout: |
             website
+            tools/generate_site_assets.py
+
+      - name: Install Python dependencies
+        run: python -m pip install --upgrade pillow
+
+      - name: Generate derived website assets
+        run: python tools/generate_site_assets.py
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

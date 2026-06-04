@@ -89,6 +89,9 @@ if (-not $SkipSecrets) {
       "GITHUB_REPO",
       "GITHUB_BRANCH",
       "GITHUB_WORKFLOW_ID",
+      "DEPLOY_WORKFLOW_ID",
+      "REPLACE_WORKFLOW_ID",
+      "SITE_ASSETS_WORKFLOW_ID",
       "UPLOAD_ALLOWED_ORIGINS",
       "MAX_ZIP_BYTES"
     )
@@ -110,8 +113,8 @@ if (-not $SkipSecrets) {
 }
 
 if (-not $SkipFunction) {
-  Write-Host "Deploying upload-submission Edge Function..."
-  npx supabase functions deploy upload-submission --project-ref $ProjectRef --use-api --no-verify-jwt
+  Write-Host "Deploying Edge Functions..."
+  npx supabase functions deploy upload-submission manage-entries replace-entry --project-ref $ProjectRef --use-api --no-verify-jwt
 }
 
-Write-Host "Supabase upload backend setup complete."
+Write-Host "Supabase backend setup complete."

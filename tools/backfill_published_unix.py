@@ -51,9 +51,19 @@ def first_commit_unix(path: Path) -> int | None:
 
 def rebuild_index(dataset: str) -> None:
     root = DATA / dataset
+    idx = root / "index.json"
+    visible_slugs: set[str] | None = None
+    if idx.is_file():
+        try:
+            current = json.loads(idx.read_text(encoding="utf-8"))
+            visible_slugs = set(current.get("entries") or current.get(dataset) or [])
+        except (json.JSONDecodeError, OSError):
+            visible_slugs = None
     rows: list[tuple[int, str]] = []
     for p in root.iterdir():
         if not p.is_dir():
+            continue
+        if visible_slugs is not None and p.name not in visible_slugs:
             continue
         cp = p / "build.json"
         if not cp.is_file():
@@ -66,7 +76,6 @@ def rebuild_index(dataset: str) -> None:
         rows.append((ts, p.name))
     rows.sort(key=lambda r: (-r[0], r[1]))
     slugs = [name for _, name in rows]
-    idx = root / "index.json"
     idx.write_text(json.dumps({"entries": slugs}, indent=2) + "\n",
                    encoding="utf-8")
     print(f"  rebuilt {idx.relative_to(REPO)} ({len(slugs)} entries)")

@@ -2,3 +2,9 @@ project_id = "xvhcniquixigesgqojdk"
 
 [functions.upload-submission]
 verify_jwt = false
+
+[functions.manage-entries]
+verify_jwt = false
+
+[functions.replace-entry]
+verify_jwt = false

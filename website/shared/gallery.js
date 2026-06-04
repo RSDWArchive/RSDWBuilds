@@ -198,11 +198,10 @@
     ]);
 
     var card = el(
-      "button",
-      { class: "rsdw-card", type: "button", "aria-label": "Open " + (d.name || it.slug) },
+      "a",
+      { class: "rsdw-card", href: "/" + cfg.dataset + "/" + it.slug + "/", "aria-label": "Open " + (d.name || it.slug) },
       [media, body]
     );
-    card.addEventListener("click", function () { openLightbox(it); });
     return card;
   }
 

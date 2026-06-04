@@ -1,0 +1,73 @@
+name: Replace Managed Entry
+
+on:
+  workflow_dispatch:
+    inputs:
+      replacement_path:
+        description: Replacement zip path
+        required: true
+        type: string
+      dataset:
+        description: Dataset
+        required: true
+        type: choice
+        options:
+          - builds
+          - prefabs
+      slug:
+        description: Entry slug
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: replace-entry
+  cancel-in-progress: false
+
+jobs:
+  replace:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Python dependencies
+        run: python -m pip install --upgrade pillow
+
+      - name: Process replacement
+        run: |
+          python tools/process_replacement.py \
+            --zip "${{ inputs.replacement_path }}" \
+            --dataset "${{ inputs.dataset }}" \
+            --slug "${{ inputs.slug }}"
+
+      - name: Generate derived website assets
+        run: python tools/generate_site_assets.py
+
+      - name: Commit replacement
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No replacement changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add staging/management website/data website/builds website/prefabs
+          git commit -m "Replace ${{ inputs.dataset }}/${{ inputs.slug }}"
+          git push
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload website artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: website
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -66,15 +66,11 @@
       href: "/submit/",
       icon: "/shared/assets/page-icons/Submit.png",
     },
-    {
-      id: "upload",
-      name: "Upload",
-      pageLabel: "Upload",
-      desc: "Contributor upload queue",
-      href: "/upload/",
-      icon: "/shared/assets/page-icons/Submit.png",
-    },
   ];
+  var HIDDEN_PAGE_LABELS = {
+    upload: "Upload",
+    manage: "Manage",
+  };
 
   var REPO_URL = "https://github.com/RSDWArchive/RSDWBuilds";
   var DISCORD_LINKS = [
@@ -109,6 +105,7 @@
     for (var i = 0; i < TOOLS.length; i++) {
       if (TOOLS[i].id === activeTool) return TOOLS[i].pageLabel || TOOLS[i].name;
     }
+    if (HIDDEN_PAGE_LABELS[activeTool]) return HIDDEN_PAGE_LABELS[activeTool];
     return "";
   }
 
