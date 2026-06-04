@@ -53,6 +53,29 @@ def all_entry_dirs(dataset: str) -> list[Path]:
     return sorted(p for p in root.iterdir() if p.is_dir())
 
 
+def write_all_entries_index(dataset: str, visible: set[str]) -> int:
+    entries = []
+    for folder in all_entry_dirs(dataset):
+        row = {
+            "slug": folder.name,
+            "visible": folder.name in visible,
+        }
+        card_path = folder / "build.json"
+        if card_path.is_file():
+            try:
+                card = read_json(card_path)
+                row["name"] = str(card.get("name") or folder.name)
+                row["published_unix"] = int(card.get("published_unix") or 0)
+            except (OSError, ValueError, TypeError):
+                row["name"] = folder.name
+                row["published_unix"] = 0
+        entries.append(row)
+
+    entries.sort(key=lambda row: (not row["visible"], str(row.get("name") or row["slug"]).lower(), row["slug"]))
+    write_json(DATA / dataset / "all.json", {"entries": entries})
+    return len(entries)
+
+
 def clean_images_list(card: dict) -> list[str]:
     raw = card.get("images")
     images: list[str] = []
@@ -210,8 +233,9 @@ def main() -> int:
                 continue
             write_detail_page(dataset, slug)
 
+        registry_count = write_all_entries_index(dataset, visible)
         remove_stale_pages(dataset, visible)
-        print(f"  thumbnails/metadata updated: {changed_cards}; detail pages: {len(visible)}")
+        print(f"  thumbnails/metadata updated: {changed_cards}; detail pages: {len(visible)}; registry entries: {registry_count}")
     return 0
 
 

@@ -35,7 +35,6 @@ Deno.serve(async (req) => {
 
   try {
     const manager = await requireManager(req);
-    const token = await createInstallationToken();
 
     if (req.method === "GET") {
       const url = new URL(req.url);
@@ -43,7 +42,7 @@ Deno.serve(async (req) => {
       if (dataset && !DATASETS.has(dataset)) return json({ error: "Invalid dataset." }, 400, headers);
       const datasets = dataset ? [dataset] : Array.from(DATASETS);
       const entries = [];
-      for (const ds of datasets) entries.push(...await listEntries(token, ds));
+      for (const ds of datasets) entries.push(...await listEntriesFromRaw(ds));
       return json({ entries }, 200, headers);
     }
 
@@ -56,6 +55,8 @@ Deno.serve(async (req) => {
     const slug = String(body.slug || "");
     const validation = validateDatasetSlug(dataset, slug);
     if (validation) return json({ error: validation }, 400, headers);
+
+    const token = await createInstallationToken();
 
     if (action === "update_metadata") {
       const result = await updateMetadata(token, manager.username, dataset, slug, body.fields || {});
@@ -73,6 +74,11 @@ Deno.serve(async (req) => {
       return json({ error: err.message }, status, headers);
     }
     if (err instanceof RequestError) return json({ error: err.message }, 400, headers);
+    if (isGitHubRateLimit(err)) {
+      return json({
+        error: "GitHub API rate limit is exhausted for the uploader app. The manager list can still load, but save actions need the quota to reset before they can commit changes.",
+      }, 429, headers);
+    }
     console.error("[manage-entries]", err);
     return json({ error: "Management service failed." }, 500, headers);
   }
@@ -80,8 +86,12 @@ Deno.serve(async (req) => {
 
 function validateDatasetSlug(dataset: string, slug: string): string {
   if (!DATASETS.has(dataset)) return "Invalid dataset.";
-  if (!/^[a-z0-9][a-z0-9_-]*$/.test(slug)) return "Invalid slug.";
+  if (!isValidSlug(slug)) return "Invalid slug.";
   return "";
+}
+
+function isValidSlug(slug: string): boolean {
+  return /^[a-z0-9][a-z0-9_-]*$/.test(slug);
 }
 
 function decodeContent(file: GitHubContent): string {
@@ -128,32 +138,68 @@ async function readJsonFile(token: string, path: string): Promise<{ data: any; s
   return { data: JSON.parse(decodeContent(file)), sha: file.sha, html_url: file.html_url };
 }
 
-async function listEntries(token: string, dataset: string): Promise<any[]> {
-  const index = await readJsonFile(token, `website/data/${dataset}/index.json`);
-  const visible = new Set((index.data.entries || index.data[dataset] || []).map(String));
-  const dirs = await githubJson<GitHubContent[]>(
-    token,
-    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${encodePath(`website/data/${dataset}`)}?ref=${encodeURIComponent(GITHUB_BRANCH)}`,
-  );
-  const entries = [];
-  for (const dir of dirs.filter((item) => item.type === "dir")) {
-    try {
-      const card = await readJsonFile(token, `website/data/${dataset}/${dir.name}/build.json`);
-      entries.push({
-        dataset,
-        slug: dir.name,
-        visible: visible.has(dir.name),
-        data: card.data,
-      });
-    } catch (_err) {
-      entries.push({ dataset, slug: dir.name, visible: visible.has(dir.name), data: null });
-    }
+function rawDataUrl(...parts: string[]): string {
+  const encodedPath = ["website", "data", ...parts].map(encodeURIComponent).join("/");
+  return `https://raw.githubusercontent.com/${encodeURIComponent(GITHUB_OWNER)}/${encodeURIComponent(GITHUB_REPO)}/${encodeURIComponent(GITHUB_BRANCH)}/${encodedPath}`;
+}
+
+async function readRawJsonOptional(...parts: string[]): Promise<any | null> {
+  const response = await fetch(rawDataUrl(...parts), {
+    headers: { Accept: "application/json" },
+  });
+  const bodyText = await response.text();
+  if (response.status === 404) return null;
+  if (!response.ok) {
+    throw new Error(`Raw site data fetch failed: ${response.status} ${bodyText.slice(0, 200)}`);
   }
+  return JSON.parse(bodyText);
+}
+
+async function readRawJson(...parts: string[]): Promise<any> {
+  const data = await readRawJsonOptional(...parts);
+  if (data == null) throw new Error(`Raw site data missing: ${parts.join("/")}`);
+  return data;
+}
+
+function indexSlugs(index: any, dataset: string): string[] {
+  const entries = Array.isArray(index?.entries) ? index.entries : Array.isArray(index?.[dataset]) ? index[dataset] : [];
+  return Array.from(new Set(entries.map(String).filter(isValidSlug)));
+}
+
+function registrySlugs(registry: any, fallback: string[]): string[] {
+  const rows = Array.isArray(registry?.entries) ? registry.entries : [];
+  const slugs = rows.map((row: any) => {
+    if (typeof row === "string") return row;
+    if (row && typeof row.slug === "string") return row.slug;
+    return "";
+  }).filter(isValidSlug);
+  return slugs.length ? Array.from(new Set(slugs)) : fallback;
+}
+
+async function listEntriesFromRaw(dataset: string): Promise<any[]> {
+  const index = await readRawJson(dataset, "index.json");
+  const visibleSlugs = indexSlugs(index, dataset);
+  const visible = new Set(visibleSlugs);
+  const registry = await readRawJsonOptional(dataset, "all.json");
+  const slugs = registrySlugs(registry, visibleSlugs);
+  const entries = await Promise.all(slugs.map(async (slug) => {
+    try {
+      const data = await readRawJson(dataset, slug, "build.json");
+      return { dataset, slug, visible: visible.has(slug), data };
+    } catch (_err) {
+      return { dataset, slug, visible: visible.has(slug), data: null };
+    }
+  }));
   entries.sort((a, b) => {
     if (a.visible !== b.visible) return a.visible ? -1 : 1;
     return String(a.data?.name || a.slug).localeCompare(String(b.data?.name || b.slug));
   });
   return entries;
+}
+
+function isGitHubRateLimit(err: unknown): boolean {
+  const message = err instanceof Error ? err.message : String(err);
+  return message.includes("API rate limit exceeded");
 }
 
 function cleanMetadata(input: any): Record<string, unknown> {

@@ -17,7 +17,19 @@ import JSZip from "https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm";
     auth: { autoRefreshToken: true, detectSessionInUrl: true, persistSession: true },
   });
 
-  var state = { session: null, entries: [], dataset: "builds", query: "", selected: null, file: null, photos: [], photoSeq: 0 };
+  var state = {
+    session: null,
+    authKey: "",
+    entries: [],
+    entriesLoaded: false,
+    entriesLoading: false,
+    dataset: "builds",
+    query: "",
+    selected: null,
+    file: null,
+    photos: [],
+    photoSeq: 0,
+  };
   var els = {};
 
   function $(id) { return document.getElementById(id); }
@@ -135,12 +147,20 @@ import JSZip from "https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm";
     els.signedOut.hidden = signedIn;
     els.signedIn.hidden = !signedIn;
     els.panel.hidden = !signedIn;
-    if (!signedIn) return;
+    if (!signedIn) {
+      state.authKey = "";
+      state.entriesLoaded = false;
+      state.entriesLoading = false;
+      return;
+    }
 
     var m = meta(session.user);
     els.name.textContent = m.name;
     els.username.textContent = m.username ? "@" + m.username : "";
     if (m.avatar) els.avatar.src = m.avatar;
+    var nextAuthKey = session.user.id + ":" + (session.access_token || "");
+    if (state.authKey === nextAuthKey && (state.entriesLoaded || state.entriesLoading)) return;
+    state.authKey = nextAuthKey;
     loadEntries();
   }
 
@@ -163,11 +183,13 @@ import JSZip from "https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm";
   }
 
   function loadEntries() {
+    state.entriesLoading = true;
     els.list.textContent = "Loading...";
     var selectedKey = state.selected ? state.selected.dataset + "/" + state.selected.slug : "";
     apiJson(MANAGE_URL)
       .then(function (data) {
         state.entries = data.entries || [];
+        state.entriesLoaded = true;
         state.selected = selectedKey
           ? state.entries.filter(function (entry) { return entry.dataset + "/" + entry.slug === selectedKey; })[0] || null
           : null;
@@ -177,9 +199,12 @@ import JSZip from "https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm";
         renderEditor();
       })
       .catch(function (err) {
+        state.entriesLoaded = false;
         els.list.textContent = "";
         els.panel.hidden = true;
         setStatus("error", err.message);
+      }).finally(function () {
+        state.entriesLoading = false;
       });
   }
 
