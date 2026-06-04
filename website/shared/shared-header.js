@@ -66,6 +66,14 @@
       href: "/submit/",
       icon: "/shared/assets/page-icons/Submit.png",
     },
+    {
+      id: "upload",
+      name: "Upload",
+      pageLabel: "Upload",
+      desc: "Contributor upload queue",
+      href: "/upload/",
+      icon: "/shared/assets/page-icons/Submit.png",
+    },
   ];
 
   var REPO_URL = "https://github.com/RSDWArchive/RSDWBuilds";

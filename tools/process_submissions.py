@@ -1,5 +1,5 @@
 """
-Process community submission .zip files dropped into website/staging/incoming/.
+Process community submission .zip files dropped into staging/incoming/.
 
 Each zip must contain a single top-level layout (this is exactly what the
 /submit/ page produces):
@@ -36,7 +36,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 WEBSITE = REPO / "website"
 DATA = WEBSITE / "data"
-INCOMING = WEBSITE / "staging" / "incoming"
+INCOMING = REPO / "staging" / "incoming"
 PROCESSED_ROOT = INCOMING / "_processed"
 
 VALID_DATASETS = {"builds", "prefabs"}

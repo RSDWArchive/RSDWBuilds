@@ -1,0 +1,12 @@
+# Local Supabase/GitHub deployment secrets
+.env
+.env.*
+!.env.*.example
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Local editor / OS noise
+.DS_Store
+Thumbs.db
