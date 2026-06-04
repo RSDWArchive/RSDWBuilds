@@ -60,7 +60,10 @@
             <h2 id="rsdw-manage-editor-title">Entry</h2>
             <span id="rsdw-manage-editor-slug"></span>
           </div>
-          <a id="rsdw-manage-view" class="rsdw-btn" href="#" target="_blank" rel="noopener">View</a>
+          <div class="rsdw-manage__editor-actions">
+            <button type="button" id="rsdw-manage-download-zip" class="rsdw-btn">Download current zip</button>
+            <a id="rsdw-manage-view" class="rsdw-btn" href="#" target="_blank" rel="noopener">View</a>
+          </div>
         </header>
 
         <fieldset class="rsdw-field">
@@ -93,6 +96,18 @@
           <button type="button" id="rsdw-manage-save" class="rsdw-btn rsdw-btn--primary">Save metadata</button>
           <button type="button" id="rsdw-manage-visibility" class="rsdw-btn">Hide</button>
         </div>
+
+        <fieldset class="rsdw-field rsdw-manage__photos">
+          <label>Photos</label>
+          <small>The first photo becomes the gallery cover.</small>
+          <div id="rsdw-manage-photo-list" class="rsdw-manage__photo-list"></div>
+          <div class="rsdw-staging__actions">
+            <button type="button" id="rsdw-manage-photo-add" class="rsdw-btn">Add photos</button>
+            <button type="button" id="rsdw-manage-photo-save" class="rsdw-btn rsdw-btn--primary" disabled>Save photos</button>
+            <button type="button" id="rsdw-manage-photo-reset" class="rsdw-btn">Reset</button>
+            <input id="rsdw-manage-photo-file" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple hidden />
+          </div>
+        </fieldset>
 
         <fieldset class="rsdw-field rsdw-manage__replace">
           <label>Replacement zip</label>

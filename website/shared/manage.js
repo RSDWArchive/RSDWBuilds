@@ -1,4 +1,5 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+import JSZip from "https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm";
 
 (function () {
   "use strict";
@@ -6,20 +7,81 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
   var SUPABASE_URL = "https://xvhcniquixigesgqojdk.supabase.co";
   var SUPABASE_KEY = "sb_publishable_Z-ZdcdkLG6T0Kp9VQTGV3Q_yACgE2tI";
   var MANAGE_URL = SUPABASE_URL + "/functions/v1/manage-entries";
+  var MEDIA_URL = SUPABASE_URL + "/functions/v1/manage-media";
   var REPLACE_URL = SUPABASE_URL + "/functions/v1/replace-entry";
   var MAX_ZIP_BYTES = 25 * 1024 * 1024;
+  var MAX_IMAGE_BYTES = 8 * 1024 * 1024;
+  var IMAGE_EXT_RE = /\.(jpe?g|png|webp|gif)$/i;
 
   var supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
     auth: { autoRefreshToken: true, detectSessionInUrl: true, persistSession: true },
   });
 
-  var state = { session: null, entries: [], dataset: "builds", query: "", selected: null, file: null };
+  var state = { session: null, entries: [], dataset: "builds", query: "", selected: null, file: null, photos: [], photoSeq: 0 };
   var els = {};
 
   function $(id) { return document.getElementById(id); }
   function folder(entry) { return "/data/" + entry.dataset + "/" + entry.slug; }
   function join(entry, rel) { return rel && rel.startsWith("/") ? rel : folder(entry) + "/" + rel; }
   function fmtSize(bytes) { return bytes < 1024 * 1024 ? (bytes / 1024).toFixed(1) + " KB" : (bytes / 1024 / 1024).toFixed(2) + " MB"; }
+
+  function safeRel(rel) {
+    return typeof rel === "string" && rel && rel.indexOf("\\") < 0 && rel.charAt(0) !== "/" && rel.split("/").indexOf("..") < 0;
+  }
+
+  function cleanImages(data) {
+    var out = [];
+    if (Array.isArray(data.images)) {
+      data.images.forEach(function (img) {
+        if (safeRel(img) && img !== "thumbnail.webp" && out.indexOf(img) < 0) out.push(img);
+      });
+    }
+    if (!out.length && safeRel(data.image) && data.image !== "thumbnail.webp") out.push(data.image);
+    return out;
+  }
+
+  function entryFileNames(data) {
+    var files = [];
+    function add(name) {
+      if (safeRel(name) && files.indexOf(name) < 0) files.push(name);
+    }
+    add(data.image);
+    cleanImages(data).forEach(add);
+    add(data.download);
+    return files;
+  }
+
+  function downloadBlob(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  function clearPhotoUrls() {
+    state.photos.forEach(function (photo) {
+      if (photo.type === "new" && photo.url) URL.revokeObjectURL(photo.url);
+    });
+  }
+
+  function resetPhotos(entry) {
+    clearPhotoUrls();
+    state.photos = cleanImages((entry && entry.data) || {}).map(function (name) {
+      return { type: "existing", name: name };
+    });
+  }
+
+  function selectEntry(entry) {
+    state.selected = entry;
+    state.file = null;
+    resetPhotos(entry);
+    renderList();
+    renderEditor();
+  }
 
   function meta(user) {
     var m = (user && user.user_metadata) || {};
@@ -94,16 +156,23 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
     state.entries = [];
     state.selected = null;
     state.file = null;
+    clearPhotoUrls();
+    state.photos = [];
     renderList();
     els.editor.hidden = true;
   }
 
   function loadEntries() {
     els.list.textContent = "Loading...";
+    var selectedKey = state.selected ? state.selected.dataset + "/" + state.selected.slug : "";
     apiJson(MANAGE_URL)
       .then(function (data) {
         state.entries = data.entries || [];
+        state.selected = selectedKey
+          ? state.entries.filter(function (entry) { return entry.dataset + "/" + entry.slug === selectedKey; })[0] || null
+          : null;
         if (!state.selected && state.entries.length) state.selected = state.entries[0];
+        resetPhotos(state.selected);
         renderList();
         renderEditor();
       })
@@ -141,10 +210,7 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
         btn.classList.add("is-active");
       }
       btn.addEventListener("click", function () {
-        state.selected = entry;
-        state.file = null;
-        renderList();
-        renderEditor();
+        selectEntry(entry);
       });
       var img = document.createElement("img");
       img.alt = "";
@@ -185,6 +251,7 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
     els.nexusmods.value = data.nexusmods || "";
     els.visibility.textContent = entry.visible ? "Hide" : "Unhide";
     renderFile();
+    renderPhotos();
     setIssues([]);
     setStatus("", "");
   }
@@ -243,6 +310,174 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
     });
   }
 
+  function downloadCurrentZip() {
+    if (!state.selected) return;
+    var entry = state.selected;
+    var data = entry.data || {};
+    var zip = new JSZip();
+    var prefix = entry.dataset + "/" + entry.slug + "/";
+    var files = entryFileNames(data);
+    setStatus("", "Building current zip...");
+    zip.file(prefix + "build.json", JSON.stringify(data, null, 2) + "\n");
+    Promise.all(files.map(function (name) {
+      return fetch(join(entry, name), { cache: "no-cache" })
+        .then(function (response) {
+          if (!response.ok) throw new Error("Could not fetch " + name + ".");
+          return response.blob();
+        })
+        .then(function (blob) {
+          zip.file(prefix + name, blob);
+        });
+    })).then(function () {
+      return zip.generateAsync({ type: "blob", compression: "DEFLATE" });
+    }).then(function (blob) {
+      downloadBlob(blob, entry.dataset + "_" + entry.slug + "_current.zip");
+      setStatus("ok", "Current zip downloaded.");
+    }).catch(function (err) {
+      setStatus("error", err.message);
+    });
+  }
+
+  function photosChanged() {
+    var entry = state.selected;
+    if (!entry) return false;
+    if (state.photos.some(function (photo) { return photo.type === "new"; })) return true;
+    var current = cleanImages(entry.data || {});
+    var next = state.photos.map(function (photo) { return photo.name; });
+    return current.join("\n") !== next.join("\n");
+  }
+
+  function renderPhotos() {
+    els.photoList.replaceChildren();
+    if (!state.photos.length) {
+      els.photoList.textContent = "No photos.";
+      els.photoSave.disabled = true;
+      return;
+    }
+    state.photos.forEach(function (photo, index) {
+      var row = document.createElement("div");
+      row.className = "rsdw-manage__photo";
+
+      var img = document.createElement("img");
+      img.alt = "";
+      img.src = photo.type === "existing" ? join(state.selected, photo.name) : photo.url;
+
+      var text = document.createElement("div");
+      var name = document.createElement("strong");
+      name.textContent = photo.type === "existing" ? photo.name : photo.file.name;
+      var meta = document.createElement("span");
+      meta.textContent = (index === 0 ? "Cover" : "Photo " + (index + 1)) + (photo.type === "new" ? " | New" : "");
+      text.appendChild(name);
+      text.appendChild(meta);
+
+      var actions = document.createElement("div");
+      actions.className = "rsdw-manage__photo-actions";
+      var up = document.createElement("button");
+      up.type = "button";
+      up.textContent = "Up";
+      up.disabled = index === 0;
+      up.addEventListener("click", function () { movePhoto(index, -1); });
+      var down = document.createElement("button");
+      down.type = "button";
+      down.textContent = "Down";
+      down.disabled = index === state.photos.length - 1;
+      down.addEventListener("click", function () { movePhoto(index, 1); });
+      var remove = document.createElement("button");
+      remove.type = "button";
+      remove.textContent = "Delete";
+      remove.disabled = state.photos.length <= 1;
+      remove.addEventListener("click", function () { deletePhoto(index); });
+      actions.appendChild(up);
+      actions.appendChild(down);
+      actions.appendChild(remove);
+
+      row.appendChild(img);
+      row.appendChild(text);
+      row.appendChild(actions);
+      els.photoList.appendChild(row);
+    });
+    els.photoSave.disabled = !photosChanged() || state.photos.length === 0;
+  }
+
+  function movePhoto(index, delta) {
+    var target = index + delta;
+    if (target < 0 || target >= state.photos.length) return;
+    var item = state.photos[index];
+    state.photos.splice(index, 1);
+    state.photos.splice(target, 0, item);
+    renderPhotos();
+  }
+
+  function deletePhoto(index) {
+    if (state.photos.length <= 1) return;
+    var removed = state.photos.splice(index, 1)[0];
+    if (removed && removed.type === "new" && removed.url) URL.revokeObjectURL(removed.url);
+    renderPhotos();
+  }
+
+  function validatePhotoFile(file) {
+    if (!IMAGE_EXT_RE.test(file.name)) return file.name + " is not a supported image type.";
+    if (file.size <= 0) return file.name + " is empty.";
+    if (file.size > MAX_IMAGE_BYTES) return file.name + " must be " + Math.round(MAX_IMAGE_BYTES / 1024 / 1024) + " MB or smaller.";
+    return "";
+  }
+
+  function addPhotoFiles(files) {
+    var issues = [];
+    Array.prototype.forEach.call(files || [], function (file) {
+      var issue = validatePhotoFile(file);
+      if (issue) {
+        issues.push(issue);
+        return;
+      }
+      state.photos.push({
+        type: "new",
+        id: ++state.photoSeq,
+        file: file,
+        url: URL.createObjectURL(file),
+      });
+    });
+    setIssues(issues);
+    renderPhotos();
+  }
+
+  function resetPhotoDraft() {
+    resetPhotos(state.selected);
+    setIssues([]);
+    renderPhotos();
+  }
+
+  function savePhotos() {
+    if (!state.selected || !photosChanged() || !state.photos.length) return;
+    setStatus("", "Saving photos...");
+    var newPhotos = state.photos.filter(function (photo) { return photo.type === "new"; });
+    var order = state.photos.map(function (photo) {
+      if (photo.type === "existing") return { type: "existing", name: photo.name };
+      return { type: "new", index: newPhotos.indexOf(photo) };
+    });
+    var form = new FormData();
+    form.append("action", "update_images");
+    form.append("dataset", state.selected.dataset);
+    form.append("slug", state.selected.slug);
+    form.append("order", JSON.stringify(order));
+    newPhotos.forEach(function (photo) { form.append("files", photo.file, photo.file.name); });
+    fetch(MEDIA_URL, {
+      method: "POST",
+      headers: authHeaders(),
+      body: form,
+    }).then(function (response) {
+      return response.json().catch(function () { return {}; }).then(function (json) {
+        if (!response.ok) throw new Error(json.error || ("HTTP " + response.status));
+        return json;
+      });
+    }).then(function () {
+      setStatus("ok", "Photos saved. Pages deploy will run shortly.");
+      loadEntries();
+    }).catch(function (err) {
+      setStatus("error", err.message);
+    });
+  }
+
   function bindTabs() {
     Array.prototype.forEach.call(document.querySelectorAll(".rsdw-manage__tabs button"), function (btn) {
       btn.addEventListener("click", function () {
@@ -251,9 +486,7 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
           b.classList.toggle("is-active", b === btn);
         });
         var next = filteredEntries()[0] || null;
-        state.selected = next;
-        renderList();
-        renderEditor();
+        selectEntry(next);
       });
     });
   }
@@ -339,6 +572,7 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
     els.title = $("rsdw-manage-editor-title");
     els.slug = $("rsdw-manage-editor-slug");
     els.view = $("rsdw-manage-view");
+    els.downloadZip = $("rsdw-manage-download-zip");
     els.nameField = $("rsdw-manage-name-field");
     els.authors = $("rsdw-manage-authors-field");
     els.description = $("rsdw-manage-description-field");
@@ -355,14 +589,27 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
     els.replace = $("rsdw-manage-replace");
     els.status = $("rsdw-manage-status");
     els.search = $("rsdw-manage-search");
+    els.photoList = $("rsdw-manage-photo-list");
+    els.photoAdd = $("rsdw-manage-photo-add");
+    els.photoFile = $("rsdw-manage-photo-file");
+    els.photoSave = $("rsdw-manage-photo-save");
+    els.photoReset = $("rsdw-manage-photo-reset");
 
     bindTabs();
     bindDropzone();
     els.login.addEventListener("click", login);
     els.logout.addEventListener("click", logout);
+    els.downloadZip.addEventListener("click", downloadCurrentZip);
     els.save.addEventListener("click", saveMetadata);
     els.visibility.addEventListener("click", toggleVisibility);
     els.replace.addEventListener("click", queueReplacement);
+    els.photoAdd.addEventListener("click", function () { els.photoFile.click(); });
+    els.photoFile.addEventListener("change", function () {
+      addPhotoFiles(els.photoFile.files);
+      els.photoFile.value = "";
+    });
+    els.photoSave.addEventListener("click", savePhotos);
+    els.photoReset.addEventListener("click", resetPhotoDraft);
     els.search.addEventListener("input", function () {
       state.query = els.search.value;
       renderList();

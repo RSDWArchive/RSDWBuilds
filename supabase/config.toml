@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.replace-entry]
 verify_jwt = false
+
+[functions.manage-media]
+verify_jwt = false

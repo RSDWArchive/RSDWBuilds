@@ -50,8 +50,8 @@ where github_username = 'githubusername';
 ## Managing Approved Managers
 
 Managers use the hidden `/manage/` page. Managers can edit metadata,
-hide/unhide entries, and queue replacement packages. They do not receive GitHub
-repo permissions.
+hide/unhide entries, queue replacement packages, and manage entry screenshots.
+They do not receive GitHub repo permissions.
 
 Add or reactivate a manager:
 
@@ -110,6 +110,7 @@ GITHUB_WORKFLOW_ID=process-submissions.yml
 DEPLOY_WORKFLOW_ID=deploy-pages.yml
 REPLACE_WORKFLOW_ID=replace-entry.yml
 SITE_ASSETS_WORKFLOW_ID=sync-site-assets.yml
+MAX_IMAGE_BYTES=8388608
 ```
 
 `GITHUB_INSTALLATION_ID` is optional. The function can discover it from the

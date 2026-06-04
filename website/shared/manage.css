@@ -174,10 +174,84 @@
   font-size: 1.1rem;
 }
 
+.rsdw-manage__editor-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.rsdw-manage__photos,
 .rsdw-manage__replace {
   margin-top: 0.6rem;
   padding-top: 1rem;
   border-top: 1px solid var(--rsdw-border);
+}
+
+.rsdw-manage__photo-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.rsdw-manage__photo {
+  display: grid;
+  grid-template-columns: 86px minmax(0, 1fr) auto;
+  gap: 0.65rem;
+  align-items: center;
+  border: 1px solid var(--rsdw-border);
+  border-radius: 8px;
+  background: rgba(20, 20, 24, 0.64);
+  padding: 0.45rem;
+}
+
+.rsdw-manage__photo img {
+  width: 86px;
+  height: 54px;
+  border-radius: 5px;
+  object-fit: cover;
+  background: #000;
+}
+
+.rsdw-manage__photo strong,
+.rsdw-manage__photo span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rsdw-manage__photo span {
+  color: var(--rsdw-muted);
+  font-size: 0.76rem;
+}
+
+.rsdw-manage__photo-actions {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.rsdw-manage__photo-actions button {
+  border: 1px solid var(--rsdw-border);
+  border-radius: 7px;
+  background: rgba(20, 20, 24, 0.85);
+  color: var(--rsdw-text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.76rem;
+  padding: 0.28rem 0.45rem;
+}
+
+.rsdw-manage__photo-actions button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.rsdw-manage__photo-actions button:hover:not(:disabled) {
+  border-color: var(--rsdw-accent);
+  background: rgba(255, 255, 255, 0.07);
 }
 
 @media (max-width: 900px) {
@@ -199,6 +273,20 @@
 
   .rsdw-manage__entry {
     grid-template-columns: 56px minmax(0, 1fr);
+  }
+
+  .rsdw-manage__photo {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  .rsdw-manage__photo img {
+    width: 72px;
+    height: 48px;
+  }
+
+  .rsdw-manage__photo-actions {
+    grid-column: 2;
+    justify-content: flex-start;
   }
 
   .rsdw-manage__badge {
