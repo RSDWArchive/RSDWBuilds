@@ -44,8 +44,8 @@
       id: "base-builder",
       name: "Base Builder",
       pageLabel: "Base Builder",
-      desc: "Create Bases in Blender",
-      href: "https://www.nexusmods.com/runescapedragonwilds/mods/231",
+      desc: "Create Bases in your Browser or in Blender",
+      href: "https://rsdwbasebuilder.com/",
       icon: "/shared/assets/page-icons/BaseBuilder.png",
       external: true,
     },
@@ -288,7 +288,15 @@
           "Archive",
         ]),
         " \u2014 ",
+        el("a", { href: "https://rsdwbasebuilder.com/", target: "_blank", rel: "noopener" }, [
+          "BaseBuilder",
+        ]),
+        " \u2014 ",
         el("a", { href: "/" }, ["Builds"]),
+        " \u2014 ",
+        el("a", { href: "https://rsdwmodel.com", target: "_blank", rel: "noopener" }, [
+          "Model",
+        ]),
         " \u2014 ",
         el("a", { href: "https://rsdwtools.com", target: "_blank", rel: "noopener" }, [
           "Tools",
