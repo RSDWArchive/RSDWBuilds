@@ -7,6 +7,12 @@
       "published_unix": 1778392280
     },
     {
+      "slug": "castle-brazier",
+      "visible": true,
+      "name": "Castle Brazier",
+      "published_unix": 1781127495
+    },
+    {
       "slug": "chests-hut",
       "visible": true,
       "name": "Chests Hut",

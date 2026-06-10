@@ -1,0 +1,19 @@
+{
+  "name": "Castle Brazier",
+  "description": "A brazier to add for example to your castle-like builds.",
+  "authors": [
+    "iAmFrosty"
+  ],
+  "tags": [
+    "prefab",
+    "castle",
+    "brazier",
+    "by-iamfrosty"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "brazier.png"
+  ],
+  "download": "brazier.png",
+  "published_unix": 1781127495
+}
