@@ -79,6 +79,12 @@
       "published_unix": 1778392280
     },
     {
+      "slug": "goblin-village",
+      "visible": true,
+      "name": "Goblin Village",
+      "published_unix": 1781236343
+    },
+    {
       "slug": "grand-exchange",
       "visible": true,
       "name": "Grand Exchange",

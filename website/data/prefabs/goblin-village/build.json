@@ -1,0 +1,20 @@
+{
+  "name": "Goblin Village",
+  "description": "Goblin Village is the main settlement of goblins in Asgarnia. The Goblin Village is ruled by two generals, General Bentnoze and General Wartface, whose differences cause the village to fall into conflict and its inhabitants to attack each other.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "goblin",
+    "village",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "DW_Goblin_Village.png"
+  ],
+  "download": "Goblin_Village.json",
+  "nexusmods": "https://www.nexusmods.com/runescapedragonwilds/mods/279",
+  "published_unix": 1781236343
+}
