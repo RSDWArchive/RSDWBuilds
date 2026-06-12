@@ -1,0 +1,20 @@
+{
+  "name": "Simple Lodestone Hut",
+  "description": "A modest lodestone hut.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "simple",
+    "lodestone",
+    "hut",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Lodestone_Hut.png"
+  ],
+  "download": "Lodestone_Hut.json",
+  "published_unix": 1781242215
+}

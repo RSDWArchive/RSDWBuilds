@@ -229,6 +229,12 @@
       "published_unix": 1778447647
     },
     {
+      "slug": "simple-lodestone-hut",
+      "visible": true,
+      "name": "Simple Lodestone Hut",
+      "published_unix": 1781242215
+    },
+    {
       "slug": "small-size-ship",
       "visible": true,
       "name": "Small Size Ship",
