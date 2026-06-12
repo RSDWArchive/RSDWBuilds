@@ -247,6 +247,12 @@
       "published_unix": 1778392280
     },
     {
+      "slug": "stocked-bookshelf",
+      "visible": true,
+      "name": "Stocked Bookshelf",
+      "published_unix": 1781243065
+    },
+    {
       "slug": "tailor-shop",
       "visible": true,
       "name": "Tailor Shop",

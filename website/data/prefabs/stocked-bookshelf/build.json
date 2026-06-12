@@ -1,0 +1,19 @@
+{
+  "name": "Stocked Bookshelf",
+  "description": "A bookshelf stocked with 28 books.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "stocked",
+    "bookshelf",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Screenshot_2026-06-12_004259.png"
+  ],
+  "download": "Stocked_Bookshelf.json",
+  "published_unix": 1781243065
+}
