@@ -1,0 +1,19 @@
+{
+  "name": "Canifis",
+  "description": "Canifis, formerly known as Kharyrll, is a small town in Morytania inhabited by werewolves in human form.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "canifis",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "DW_Canifis.png"
+  ],
+  "download": "Canifis.json",
+  "nexusmods": "https://www.nexusmods.com/runescapedragonwilds/mods/279",
+  "published_unix": 1781236921
+}
