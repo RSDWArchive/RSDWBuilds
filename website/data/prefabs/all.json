@@ -55,6 +55,12 @@
       "published_unix": 1778392280
     },
     {
+      "slug": "draynor-village",
+      "visible": true,
+      "name": "Draynor Village",
+      "published_unix": 1781237267
+    },
+    {
       "slug": "falador",
       "visible": true,
       "name": "Falador",

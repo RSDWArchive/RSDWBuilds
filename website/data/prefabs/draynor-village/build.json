@@ -1,0 +1,20 @@
+{
+  "name": "Draynor Village",
+  "description": "Draynor Village, often shortened to Draynor, is a small village located between Falador and Lumbridge.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "draynor",
+    "village",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Draynor_Village.png"
+  ],
+  "download": "Draynor_Village.json",
+  "nexusmods": "https://www.nexusmods.com/runescapedragonwilds/mods/279",
+  "published_unix": 1781237267
+}
