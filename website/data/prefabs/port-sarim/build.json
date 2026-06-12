@@ -1,0 +1,20 @@
+{
+  "name": "Port Sarim",
+  "description": "Port Sarim is a small port in south-eastern Asgarnia. The port connects to a number of other ports.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "port",
+    "sarim",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Port_Sarim_Card.png"
+  ],
+  "download": "Port_Sarim.json",
+  "nexusmods": "https://www.nexusmods.com/runescapedragonwilds/mods/279",
+  "published_unix": 1781232188
+}
