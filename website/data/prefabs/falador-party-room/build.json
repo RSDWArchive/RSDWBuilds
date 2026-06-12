@@ -1,0 +1,21 @@
+{
+  "name": "Falador Party Room",
+  "description": "The Party Room is a building in north-east Falador, primarily used by players to host drop parties.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "falador",
+    "party",
+    "room",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Pete_s_Party_Room.png"
+  ],
+  "download": "Pete_s_Party_Room.json",
+  "nexusmods": "https://www.nexusmods.com/runescapedragonwilds/mods/279",
+  "published_unix": 1781236074
+}

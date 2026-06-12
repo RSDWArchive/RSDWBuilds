@@ -55,6 +55,12 @@
       "published_unix": 1781235379
     },
     {
+      "slug": "falador-party-room",
+      "visible": true,
+      "name": "Falador Party Room",
+      "published_unix": 1781236074
+    },
+    {
       "slug": "fight-pit",
       "visible": true,
       "name": "Fight Pit",
