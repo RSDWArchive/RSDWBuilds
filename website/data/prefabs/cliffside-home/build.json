@@ -1,0 +1,19 @@
+{
+  "name": "Cliffside Home",
+  "description": "A cliffside home restoration of the hillside castle near the Dragonwilds Goblin Castle in Brynmoor.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "cliffside",
+    "home",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Cliffside_Home.png"
+  ],
+  "download": "Cliffside_Home.json",
+  "published_unix": 1781241978
+}

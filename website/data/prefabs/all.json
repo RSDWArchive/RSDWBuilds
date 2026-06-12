@@ -25,6 +25,12 @@
       "published_unix": 1778392280
     },
     {
+      "slug": "cliffside-home",
+      "visible": true,
+      "name": "Cliffside Home",
+      "published_unix": 1781241978
+    },
+    {
       "slug": "combat-training",
       "visible": true,
       "name": "Combat Training",
