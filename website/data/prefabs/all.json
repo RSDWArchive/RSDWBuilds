@@ -245,6 +245,12 @@
       "visible": true,
       "name": "White Knights' Castle",
       "published_unix": 1781235754
+    },
+    {
+      "slug": "wizards-tower",
+      "visible": true,
+      "name": "Wizards' Tower",
+      "published_unix": 1781236616
     }
   ]
 }

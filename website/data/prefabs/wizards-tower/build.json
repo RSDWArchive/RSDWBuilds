@@ -1,0 +1,20 @@
+{
+  "name": "Wizards' Tower",
+  "description": "The Wizards' Tower was created at the same time as the founding of the Order of Wizards at the start of the Fifth Age, following the rediscovery of runecrafting.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "wizards",
+    "tower",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "DW_Wizards_Tower.png"
+  ],
+  "download": "Wizards_Tower.json",
+  "nexusmods": "https://www.nexusmods.com/runescapedragonwilds/mods/279",
+  "published_unix": 1781236616
+}
