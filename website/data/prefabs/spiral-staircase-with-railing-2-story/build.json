@@ -1,0 +1,21 @@
+{
+  "name": "Spiral Staircase With Railing - 2 Story",
+  "description": "A spiral staircase with a railing for 2 stories. Lock anchor to middle of desired foundation for the staircase.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "spiral",
+    "staircase",
+    "railing",
+    "story",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "2_Story.png"
+  ],
+  "download": "Spiral_Staircase_With_Railing_2_Story.json",
+  "published_unix": 1781246112
+}
