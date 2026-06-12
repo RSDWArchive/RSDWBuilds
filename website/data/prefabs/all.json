@@ -227,6 +227,12 @@
       "visible": true,
       "name": "Weapons Hut",
       "published_unix": 1778392280
+    },
+    {
+      "slug": "white-knights-castle",
+      "visible": true,
+      "name": "White Knights' Castle",
+      "published_unix": 1781235754
     }
   ]
 }

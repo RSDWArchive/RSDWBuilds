@@ -1,0 +1,21 @@
+{
+  "name": "White Knights' Castle",
+  "description": "The White Knights' Castle is the centre of Falador and base of the White Knights, who are a major political force in Asgarnia and loyal to Saradomin.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "white",
+    "knights",
+    "castle",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "White_Knights_Castle.png"
+  ],
+  "download": "White_Knights_Castle.json",
+  "nexusmods": "https://www.nexusmods.com/runescapedragonwilds/mods/279",
+  "published_unix": 1781235754
+}
