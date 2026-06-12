@@ -193,6 +193,12 @@
       "published_unix": 1778447647
     },
     {
+      "slug": "small-size-ship",
+      "visible": true,
+      "name": "Small Size Ship",
+      "published_unix": 1781233478
+    },
+    {
       "slug": "smithing-hut",
       "visible": true,
       "name": "Smithing Hut",

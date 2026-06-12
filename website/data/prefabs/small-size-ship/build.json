@@ -1,0 +1,20 @@
+{
+  "name": "Small Size Ship",
+  "description": "A Small Sized Ship (300 Pieces)",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "small",
+    "size",
+    "ship",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Screenshot_2026-06-11_220356.png"
+  ],
+  "download": "Small_Size_Ship.json",
+  "published_unix": 1781233478
+}
