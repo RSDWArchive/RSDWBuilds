@@ -1,0 +1,19 @@
+{
+  "name": "Falador",
+  "description": "Falador is the capital city of the Kingdom of Asgarnia. It is home to the iconic White Knight's Castle, and is one of the largest and most major cities, only slightly smaller than Varrock.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "falador",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "DW_Falador.png"
+  ],
+  "download": "Falador.json",
+  "nexusmods": "https://www.nexusmods.com/runescapedragonwilds/mods/279",
+  "published_unix": 1781235379
+}
