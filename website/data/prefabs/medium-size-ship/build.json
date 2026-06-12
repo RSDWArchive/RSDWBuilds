@@ -1,0 +1,20 @@
+{
+  "name": "Medium Size Ship",
+  "description": "A medium sized ship (500 pieces)",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "medium",
+    "size",
+    "ship",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Screenshot_2026-06-11_171131.png"
+  ],
+  "download": "Medium_Size_Ship.json",
+  "published_unix": 1781231288
+}
