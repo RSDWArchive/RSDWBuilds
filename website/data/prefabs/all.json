@@ -85,6 +85,12 @@
       "published_unix": 1778392280
     },
     {
+      "slug": "large-size-ship",
+      "visible": true,
+      "name": "Large Size Ship",
+      "published_unix": 1781232541
+    },
+    {
       "slug": "lodestone-hut",
       "visible": true,
       "name": "Lodestone Hut",

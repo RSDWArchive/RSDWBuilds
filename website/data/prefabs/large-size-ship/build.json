@@ -1,0 +1,20 @@
+{
+  "name": "Large Size Ship",
+  "description": "A Large Sized Ship (650 Pieces)",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "large",
+    "size",
+    "ship",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Screenshot_2026-06-11_214736.png"
+  ],
+  "download": "Large_Size_Ship.json",
+  "published_unix": 1781232541
+}
