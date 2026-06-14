@@ -277,6 +277,12 @@
       "published_unix": 1778392280
     },
     {
+      "slug": "tower-house",
+      "visible": true,
+      "name": "Tower House",
+      "published_unix": 1781469085
+    },
+    {
       "slug": "weapons-hut",
       "visible": true,
       "name": "Weapons Hut",

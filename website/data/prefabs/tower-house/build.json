@@ -1,0 +1,19 @@
+{
+  "name": "Tower House",
+  "description": "The point on the anchor indicates the direction the build will face. The build is level with the anchor. Enjoy!",
+  "authors": [
+    "AZUH"
+  ],
+  "tags": [
+    "prefab",
+    "tower",
+    "house",
+    "by-azuh"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "918e7c8ba2724e3c03102583fb443dde.jpg"
+  ],
+  "download": "Azuh_Tower_House.zip",
+  "published_unix": 1781469085
+}
