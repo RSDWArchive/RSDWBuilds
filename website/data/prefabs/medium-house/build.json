@@ -1,0 +1,19 @@
+{
+  "name": "Medium House",
+  "description": "The point on the anchor indicates the direction the build will face. The build is level with the anchor. Enjoy!",
+  "authors": [
+    "AZUH"
+  ],
+  "tags": [
+    "prefab",
+    "medium",
+    "house",
+    "by-azuh"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "eaf9a37eaf1f5059a6c255c0da417ff4.jpg"
+  ],
+  "download": "Azuh_Medium_House.zip",
+  "published_unix": 1781469664
+}

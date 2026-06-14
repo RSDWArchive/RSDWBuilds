@@ -187,6 +187,12 @@
       "published_unix": 1778392280
     },
     {
+      "slug": "medium-house",
+      "visible": true,
+      "name": "Medium House",
+      "published_unix": 1781469664
+    },
+    {
       "slug": "medium-size-ship",
       "visible": true,
       "name": "Medium Size Ship",
