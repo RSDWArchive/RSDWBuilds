@@ -289,6 +289,12 @@
       "published_unix": 1778392280
     },
     {
+      "slug": "tiny-house",
+      "visible": true,
+      "name": "Tiny House",
+      "published_unix": 1781470230
+    },
+    {
       "slug": "tower-house",
       "visible": true,
       "name": "Tower House",

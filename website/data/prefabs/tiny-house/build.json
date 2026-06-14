@@ -1,0 +1,19 @@
+{
+  "name": "Tiny House",
+  "description": "The point on the anchor indicates the direction the build will face. The build is level with the anchor. Enjoy!",
+  "authors": [
+    "AZUH"
+  ],
+  "tags": [
+    "prefab",
+    "tiny",
+    "house",
+    "by-azuh"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "4a540f9ae98f62b7a5a0766451819fc5.jpg"
+  ],
+  "download": "Azuh_Tiny_House.zip",
+  "published_unix": 1781470230
+}
