@@ -1,0 +1,19 @@
+{
+  "name": "Large House",
+  "description": "The point on the anchor indicates the direction the build will face. The build is level with the anchor. Enjoy!",
+  "authors": [
+    "AZUH"
+  ],
+  "tags": [
+    "prefab",
+    "large",
+    "house",
+    "by-azuh"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "ad0556471a35e9b6062a0407e47d46a5.jpg"
+  ],
+  "download": "Azuh_Large_House.zip",
+  "published_unix": 1781469802
+}
