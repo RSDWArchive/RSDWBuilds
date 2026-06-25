@@ -1,7 +1,7 @@
 /* RSDWBuilds Tier Converter
  *
  * Pure client-side: load a build .json, show a tier breakdown, let the user
- * pick T1/T2/T3 swap targets per source tier, then download a rewritten file.
+ * pick tier swap targets per source tier, then download a rewritten file.
  *
  * Pieces are matched against /data/tier_pairs.json by their full
  * piece_data_name (the stable Unreal asset path). When a target tier has no
@@ -10,18 +10,19 @@
 (function () {
   "use strict";
 
-  var TIER_LABEL = { 1: "Tier 1", 2: "Tier 2", 3: "Tier 3" };
+  var TIER_LABEL = { 1: "Tier 1", 2: "Tier 2", 3: "Tier 3", 4: "Tier 4" };
   var PAIRS_URL = "/data/tier_pairs.json";
 
   var state = {
     pairs: null,        // tier_pairs.json
+    tiers: [],          // numeric tier list exposed by tier_pairs.json
     filename: null,
     raw: null,          // parsed JSON object
     pieces: null,       // reference to pieces array inside raw
-    breakdown: null,    // { '1': N, '2': N, '3': N, untiered: N }
+    breakdown: null,    // { '1': N, '2': N, ..., untiered: N }
     categories: null,   // { Walls: N, Floor: N, ... } counts of TIERED pieces only
     enabledCats: null,  // Set of category names currently enabled
-    targets: { 1: 0, 2: 0, 3: 0 }, // 0 = no change
+    targets: {},        // { sourceTier: targetTier }; 0 = no change
   };
 
   var els = {};
@@ -49,7 +50,8 @@
         return r.json();
       })
       .then(function (j) {
-        state.pairs = j;
+        state.pairs = normalizePairs(j);
+        state.tiers = state.pairs.tiers;
       })
       .catch(function (err) {
         showFatal("Failed to load tier pairs table: " + err.message);
@@ -89,6 +91,45 @@
       var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
       if (f) loadFile(f);
     });
+  }
+
+  function normalizePairs(pairs) {
+    var tierSet = {};
+    if (Array.isArray(pairs.tiers)) {
+      pairs.tiers.forEach(function (tier) {
+        tier = parseInt(tier, 10);
+        if (tier) tierSet[tier] = true;
+      });
+    }
+    Object.keys(pairs.by_data_name || {}).forEach(function (name) {
+      var tier = parseInt((pairs.by_data_name[name] || {}).tier, 10);
+      if (tier) tierSet[tier] = true;
+    });
+    pairs.tiers = Object.keys(tierSet)
+      .map(function (tier) { return parseInt(tier, 10); })
+      .sort(function (a, b) { return a - b; });
+    return pairs;
+  }
+
+  function defaultTargets() {
+    var targets = {};
+    state.tiers.forEach(function (tier) {
+      targets[tier] = 0;
+    });
+    return targets;
+  }
+
+  function tierLabel(tier) {
+    var key = String(tier);
+    return (state.pairs && state.pairs.tier_labels && state.pairs.tier_labels[key]) ||
+      TIER_LABEL[tier] ||
+      ("Tier " + tier);
+  }
+
+  function tieredTotal(breakdown) {
+    return state.tiers.reduce(function (total, tier) {
+      return total + (breakdown[tier] || 0);
+    }, 0);
   }
 
   function loadFile(file) {
@@ -137,7 +178,7 @@
     state.filename = name;
     state.raw = parsed;
     state.pieces = pieces;
-    state.targets = { 1: 0, 2: 0, 3: 0 };
+    state.targets = defaultTargets();
     state.breakdown = computeBreakdown(pieces);
     state.categories = computeCategoryCounts(pieces);
     state.enabledCats = new Set(Object.keys(state.categories));
@@ -145,7 +186,7 @@
     els.filename.textContent = name;
     els.summary.textContent =
       pieces.length + " pieces \u00b7 " +
-      (state.breakdown[1] + state.breakdown[2] + state.breakdown[3]) +
+      tieredTotal(state.breakdown) +
       " tiered \u00b7 " + state.breakdown.untiered + " untiered";
     renderBreakdown();
     renderRows();
@@ -157,13 +198,16 @@
   }
 
   function computeBreakdown(pieces) {
-    var b = { 1: 0, 2: 0, 3: 0, untiered: 0 };
+    var b = { untiered: 0 };
+    state.tiers.forEach(function (tier) {
+      b[tier] = 0;
+    });
     var byName = state.pairs.by_data_name;
     for (var i = 0; i < pieces.length; i++) {
       var p = pieces[i];
       var nm = p && p.piece_data_name;
       var hit = nm && byName[nm];
-      if (hit) b[hit.tier] += 1;
+      if (hit && b[hit.tier] !== undefined) b[hit.tier] += 1;
       else b.untiered += 1;
     }
     return b;
@@ -186,10 +230,10 @@
   function renderBreakdown() {
     var b = state.breakdown;
     els.breakdown.innerHTML = "";
-    [1, 2, 3].forEach(function (t) {
+    state.tiers.forEach(function (t) {
       var pill = document.createElement("span");
       pill.className = "rsdw-conv__pill rsdw-conv__pill--t" + t;
-      pill.textContent = TIER_LABEL[t] + ": " + b[t];
+      pill.textContent = tierLabel(t) + ": " + b[t];
       els.breakdown.appendChild(pill);
     });
     var u = document.createElement("span");
@@ -200,14 +244,14 @@
 
   function renderRows() {
     els.rows.innerHTML = "";
-    [1, 2, 3].forEach(function (src) {
+    state.tiers.forEach(function (src) {
       var row = document.createElement("div");
       row.className = "rsdw-conv__row";
 
       var label = document.createElement("label");
       label.className = "rsdw-conv__row-label";
       label.htmlFor = "rsdw-conv-target-" + src;
-      label.textContent = TIER_LABEL[src] + " \u2192";
+      label.textContent = tierLabel(src) + " \u2192";
       row.appendChild(label);
 
       var sel = document.createElement("select");
@@ -220,11 +264,11 @@
       optNone.textContent = "(no change)";
       sel.appendChild(optNone);
 
-      [1, 2, 3].forEach(function (dst) {
+      state.tiers.forEach(function (dst) {
         if (dst === src) return;
         var o = document.createElement("option");
         o.value = String(dst);
-        o.textContent = TIER_LABEL[dst];
+        o.textContent = tierLabel(dst);
         sel.appendChild(o);
       });
       sel.value = String(state.targets[src] || 0);
@@ -310,10 +354,9 @@
   }
 
   function updateRunEnabled() {
-    var anyChange =
-      (state.targets[1] && state.breakdown[1]) ||
-      (state.targets[2] && state.breakdown[2]) ||
-      (state.targets[3] && state.breakdown[3]);
+    var anyChange = state.tiers.some(function (tier) {
+      return state.targets[tier] && state.breakdown[tier];
+    });
     var anyCat = state.enabledCats && state.enabledCats.size > 0;
     els.run.disabled = !(anyChange && anyCat);
   }
@@ -347,8 +390,8 @@
         skippedByCategory += 1;
         continue;
       }
-      var src = hit.tier;
-      var dst = state.targets[src];
+      var src = parseInt(hit.tier, 10);
+      var dst = parseInt(state.targets[src], 10) || 0;
       if (!dst) {
         unchanged += 1;
         continue;
@@ -455,7 +498,7 @@
   function suggestFilename(name, targets) {
     var base = (name || "build.json").replace(/\.json$/i, "");
     var parts = [];
-    [1, 2, 3].forEach(function (s) {
+    state.tiers.forEach(function (s) {
       if (targets[s] && targets[s] !== s) {
         parts.push("T" + s + "to" + targets[s]);
       }
@@ -471,7 +514,7 @@
     state.breakdown = null;
     state.categories = null;
     state.enabledCats = null;
-    state.targets = { 1: 0, 2: 0, 3: 0 };
+    state.targets = defaultTargets();
     els.panel.hidden = true;
     els.report.hidden = true;
     els.report.innerHTML = "";
