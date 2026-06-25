@@ -184,11 +184,18 @@ def validate_card(folder: Path) -> list[str]:
         dl = folder / download
         if not dl.is_file():
             errors.append(f"download file not found: {download}")
-        elif dl.suffix.lower() == ".json":
+        elif dl.suffix.lower() != ".json":
+            errors.append(f"download file must be a .json payload: {download}")
+        else:
             try:
-                json.loads(dl.read_text(encoding="utf-8"))
-            except (json.JSONDecodeError, OSError) as exc:
+                payload = json.loads(dl.read_text(encoding="utf-8"))
+            except (UnicodeDecodeError, json.JSONDecodeError, OSError) as exc:
                 errors.append(f"download.json invalid JSON: {exc}")
+            else:
+                if not isinstance(payload, dict):
+                    errors.append(f"download JSON must be an object: {download}")
+                elif not isinstance(payload.get("pieces"), list):
+                    errors.append(f"download JSON missing pieces array: {download}")
 
     referenced = {"build.json"} | set(img_list)
     if isinstance(download, str):
