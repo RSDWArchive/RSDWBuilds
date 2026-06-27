@@ -1,0 +1,20 @@
+{
+  "name": "Hanging Iron Lantern",
+  "description": "A hanging iron lantern. Persists world reload.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "hanging",
+    "iron",
+    "lantern",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Screenshot_2026-06-26_215751.png"
+  ],
+  "download": "Hanging_Iron_Lantern.json",
+  "published_unix": 1782529407
+}

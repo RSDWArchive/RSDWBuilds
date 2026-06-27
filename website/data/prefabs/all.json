@@ -103,6 +103,12 @@
       "published_unix": 1778149755
     },
     {
+      "slug": "hanging-iron-lantern",
+      "visible": true,
+      "name": "Hanging Iron Lantern",
+      "published_unix": 1782529407
+    },
+    {
       "slug": "hunters-lodge",
       "visible": true,
       "name": "Hunters Lodge",
@@ -263,6 +269,12 @@
       "visible": true,
       "name": "Spiral Staircase With Railing - 2 Story",
       "published_unix": 1781246112
+    },
+    {
+      "slug": "standing-iron-lantern",
+      "visible": true,
+      "name": "Standing Iron Lantern",
+      "published_unix": 1782529407
     },
     {
       "slug": "stocked-bookshelf",
