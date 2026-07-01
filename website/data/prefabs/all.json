@@ -265,6 +265,12 @@
       "published_unix": 1781242215
     },
     {
+      "slug": "simple-oak-bed",
+      "visible": true,
+      "name": "Simple Oak Bed",
+      "published_unix": 1782930992
+    },
+    {
       "slug": "small-size-ship",
       "visible": true,
       "name": "Small Size Ship",

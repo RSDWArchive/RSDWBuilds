@@ -1,0 +1,20 @@
+{
+  "name": "Simple Oak Bed",
+  "description": "A simple, larger, oak bed.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "simple",
+    "oak",
+    "bed",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Screenshot_2026-07-01_133502.png"
+  ],
+  "download": "Simple_Oak_Bed.json",
+  "published_unix": 1782930992
+}
