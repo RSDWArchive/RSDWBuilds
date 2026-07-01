@@ -1,0 +1,20 @@
+{
+  "name": "OSRS Oak Bed",
+  "description": "A simple larger OSRS Oak Bed designed to match the OSRS large beds. This build model only uses standard build pieces to allow bed functionality without dropped item interference.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "osrs",
+    "oak",
+    "bed",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Screenshot_2026-07-01_133656.png"
+  ],
+  "download": "OSRS_Bed.json",
+  "published_unix": 1782931161
+}

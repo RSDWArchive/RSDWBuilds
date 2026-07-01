@@ -235,6 +235,12 @@
       "published_unix": 1782920643
     },
     {
+      "slug": "osrs-oak-bed",
+      "visible": true,
+      "name": "OSRS Oak Bed",
+      "published_unix": 1782931161
+    },
+    {
       "slug": "port-sarim",
       "visible": true,
       "name": "Port Sarim",
