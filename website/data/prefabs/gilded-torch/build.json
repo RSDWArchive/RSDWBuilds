@@ -1,0 +1,19 @@
+{
+  "name": "Gilded Torch",
+  "description": "A gilded torch.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "gilded",
+    "torch",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Screenshot_2026-07-01_120351.png"
+  ],
+  "download": "Gilded_Torch.json",
+  "published_unix": 1782925597
+}
