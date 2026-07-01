@@ -223,6 +223,12 @@
       "published_unix": 1782886954
     },
     {
+      "slug": "osrs-fountain-2",
+      "visible": true,
+      "name": "OSRS Fountain 2",
+      "published_unix": 1782920643
+    },
+    {
       "slug": "port-sarim",
       "visible": true,
       "name": "Port Sarim",

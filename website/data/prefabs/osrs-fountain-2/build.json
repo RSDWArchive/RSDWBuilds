@@ -1,0 +1,19 @@
+{
+  "name": "OSRS Fountain 2",
+  "description": "An alternate OSRS Fountain Model. This utilizes a different item for the water to give pickup range a smaller radius where impactful.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "osrs",
+    "fountain",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Screenshot_2026-07-01_092628.png"
+  ],
+  "download": "OSRS_Fountain.json",
+  "published_unix": 1782920643
+}
