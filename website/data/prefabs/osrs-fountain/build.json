@@ -1,0 +1,19 @@
+{
+  "name": "OSRS Fountain",
+  "description": "A fountain styled after the OSRS Fountain",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "osrs",
+    "fountain",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Screenshot_2026-07-01_012128.png"
+  ],
+  "download": "OSRS_Fountain.json",
+  "published_unix": 1782886954
+}
