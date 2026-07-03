@@ -1,0 +1,21 @@
+{
+  "name": "OSRS Triple Torch Stand",
+  "description": "A triple torch which matches a candlestick with 3 heads from OSRS.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "osrs",
+    "triple",
+    "torch",
+    "stand",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Screenshot_2026-07-03_070913.png"
+  ],
+  "download": "Triple_Wood_Torch_Stand.json",
+  "published_unix": 1783080707
+}
