@@ -1,0 +1,21 @@
+{
+  "name": "OSRS Medium Table With Tablecloth",
+  "description": "A medium floor-size table with a table cloth, found in various spaces in OSRS such as Draynor Manor",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "osrs",
+    "medium",
+    "table",
+    "tablecloth",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Screenshot_2026-07-03_004016.png"
+  ],
+  "download": "OSRS_Medium_Table_With_Tablecloth.json",
+  "published_unix": 1783057390
+}
