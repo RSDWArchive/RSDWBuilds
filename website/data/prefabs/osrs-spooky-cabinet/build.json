@@ -1,0 +1,20 @@
+{
+  "name": "OSRS Spooky Cabinet",
+  "description": "A spooky cabinet from OSRS found in Draynor manor and witch houses.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "osrs",
+    "spooky",
+    "cabinet",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Screenshot_2026-07-02_234858.png"
+  ],
+  "download": "OSRS_Spooky_Cabinet.json",
+  "published_unix": 1783054730
+}

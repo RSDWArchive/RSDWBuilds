@@ -241,6 +241,12 @@
       "published_unix": 1782931161
     },
     {
+      "slug": "osrs-spooky-cabinet",
+      "visible": true,
+      "name": "OSRS Spooky Cabinet",
+      "published_unix": 1783054730
+    },
+    {
       "slug": "port-sarim",
       "visible": true,
       "name": "Port Sarim",
