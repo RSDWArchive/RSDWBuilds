@@ -1,0 +1,20 @@
+{
+  "name": "OSRS Grandfather Clock",
+  "description": "A grandfather clock. This can be found in locations of OSRS including Draynor Manor, Lumbridge Village, and others.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "osrs",
+    "grandfather",
+    "clock",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Grandfather_Clock.png"
+  ],
+  "download": "OSRS_Grandfather_Clock.json",
+  "published_unix": 1783371615
+}

@@ -1,0 +1,22 @@
+{
+  "name": "OSRS Triple Wall Mounted Torch",
+  "description": "A triple wall-mounted torch. This can be found in locations of OSRS including Draynor Manor.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "osrs",
+    "triple",
+    "wall",
+    "mounted",
+    "torch",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Triple_Wall_Mount_Torch.png"
+  ],
+  "download": "Triple_Wall_Mount_Torch.json",
+  "published_unix": 1783371615
+}

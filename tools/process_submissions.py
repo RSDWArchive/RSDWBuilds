@@ -38,6 +38,7 @@ WEBSITE = REPO / "website"
 DATA = WEBSITE / "data"
 INCOMING = REPO / "staging" / "incoming"
 PROCESSED_ROOT = INCOMING / "_processed"
+FAILED_ROOT = INCOMING / "_failed"
 
 VALID_DATASETS = {"builds", "prefabs"}
 SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9_\-]*$")
@@ -250,7 +251,7 @@ def rebuild_index(dataset: str, force_include: list[str] | None = None) -> Path:
     return idx
 
 
-def archive_zip(zip_path: Path, batch_root: Path) -> Path:
+def move_zip(zip_path: Path, batch_root: Path) -> Path:
     batch_root.mkdir(parents=True, exist_ok=True)
     dest = batch_root / zip_path.name
     n = 2
@@ -258,6 +259,22 @@ def archive_zip(zip_path: Path, batch_root: Path) -> Path:
         dest = batch_root / f"{zip_path.stem} ({n}){zip_path.suffix}"
         n += 1
     shutil.move(str(zip_path), str(dest))
+    return dest
+
+
+def archive_zip(zip_path: Path, batch_root: Path) -> Path:
+    return move_zip(zip_path, batch_root)
+
+
+def quarantine_zip(zip_path: Path, batch_root: Path, reasons: list[str]) -> Path:
+    dest = move_zip(zip_path, batch_root)
+    report = dest.with_name(dest.name + ".txt")
+    report.write_text(
+        "Upload was not published.\n\n"
+        + "\n".join(f"- {reason}" for reason in reasons)
+        + "\n",
+        encoding="utf-8",
+    )
     return dest
 
 
@@ -278,12 +295,11 @@ def main() -> int:
 
     print(f"Processing {len(zips)} zip(s) from {INCOMING.relative_to(REPO)}\n")
 
-    batch_root = (
-        PROCESSED_ROOT
-        / datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    )
+    batch_stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    batch_root = PROCESSED_ROOT / batch_stamp
+    failed_root = FAILED_ROOT / batch_stamp
     published: dict[str, list[str]] = {}
-    failed = 0
+    quarantined = 0
 
     for zp in zips:
         try:
@@ -292,14 +308,18 @@ def main() -> int:
             dataset, slug = detect_layout(members)
         except (zipfile.BadZipFile, ValueError) as exc:
             print(f"  [FAIL]      {zp.name}: {exc}")
-            failed += 1
+            dest = quarantine_zip(zp, failed_root, [str(exc)])
+            print(f"              quarantined -> {dest.relative_to(REPO)}")
+            quarantined += 1
             continue
 
         try:
             target = extract_to_data(zp, dataset, slug, members)
         except (FileExistsError, OSError) as exc:
             print(f"  [FAIL]      {zp.name}: {exc}")
-            failed += 1
+            dest = quarantine_zip(zp, failed_root, [str(exc)])
+            print(f"              quarantined -> {dest.relative_to(REPO)}")
+            quarantined += 1
             continue
 
         errors = validate_card(target)
@@ -308,7 +328,9 @@ def main() -> int:
             for e in errors:
                 print(f"              - {e}")
             shutil.rmtree(target, ignore_errors=True)
-            failed += 1
+            dest = quarantine_zip(zp, failed_root, errors)
+            print(f"              quarantined -> {dest.relative_to(REPO)}")
+            quarantined += 1
             continue
 
         # Stamp publish time so galleries can sort newest-first.
@@ -331,8 +353,8 @@ def main() -> int:
         print(f"  rebuilt {idx.relative_to(REPO)} (+{len(slugs)})")
 
     total_pub = sum(len(v) for v in published.values())
-    print(f"\nSummary: {total_pub} published, {failed} failed.")
-    return 0 if failed == 0 else 1
+    print(f"\nSummary: {total_pub} published, {quarantined} quarantined.")
+    return 0
 
 
 if __name__ == "__main__":

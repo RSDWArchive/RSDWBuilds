@@ -1,0 +1,21 @@
+{
+  "name": "OSRS Decorative Cape Rack",
+  "description": "A non-functional decoration-only cape rack designed after the decorative cape rack found in OSRS in various locations including Draynor Manor.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "osrs",
+    "decorative",
+    "cape",
+    "rack",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "OSRS_Decorative_Cape_Rack.png"
+  ],
+  "download": "OSRS_Decorative_Cape_Rack.json",
+  "published_unix": 1783371615
+}

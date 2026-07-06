@@ -121,6 +121,12 @@
       "published_unix": 1780436152
     },
     {
+      "slug": "iron-dresser",
+      "visible": true,
+      "name": "Iron Dresser",
+      "published_unix": 1783371615
+    },
+    {
       "slug": "kiln-hut",
       "visible": true,
       "name": "Kiln Hut",
@@ -223,6 +229,12 @@
       "published_unix": 1778392280
     },
     {
+      "slug": "osrs-decorative-cape-rack",
+      "visible": true,
+      "name": "OSRS Decorative Cape Rack",
+      "published_unix": 1783371615
+    },
+    {
       "slug": "osrs-fountain",
       "visible": true,
       "name": "OSRS Fountain",
@@ -233,6 +245,12 @@
       "visible": true,
       "name": "OSRS Fountain 2",
       "published_unix": 1782920643
+    },
+    {
+      "slug": "osrs-grandfather-clock",
+      "visible": true,
+      "name": "OSRS Grandfather Clock",
+      "published_unix": 1783371615
     },
     {
       "slug": "osrs-medium-table-with-tablecloth",
@@ -257,6 +275,12 @@
       "visible": true,
       "name": "OSRS Triple Torch Stand",
       "published_unix": 1783080707
+    },
+    {
+      "slug": "osrs-triple-wall-mounted-torch",
+      "visible": true,
+      "name": "OSRS Triple Wall Mounted Torch",
+      "published_unix": 1783371615
     },
     {
       "slug": "port-sarim",

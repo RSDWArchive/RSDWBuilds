@@ -1,0 +1,3 @@
+Upload was not published.
+
+- download file must be a .json payload: Long_Medium_Table_With_Tablecloth.png

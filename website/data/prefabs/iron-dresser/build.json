@@ -1,0 +1,19 @@
+{
+  "name": "Iron Dresser",
+  "description": "A triple stacked Iron Chest dresser for cleaner stacking organization.",
+  "authors": [
+    "Inevitance"
+  ],
+  "tags": [
+    "prefab",
+    "iron",
+    "dresser",
+    "by-inevitance"
+  ],
+  "image": "thumbnail.webp",
+  "images": [
+    "Iron_Dresser.png"
+  ],
+  "download": "Iron_Dresser.json",
+  "published_unix": 1783371615
+}
